@@ -30,11 +30,17 @@ public class DateiUploadController {
      * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
      *              geschrieben werden.
      * 
-     * @return Weiterleitung auf Erfolgsseite
+     * @return Weiterleitung auf Folgeseite für Erfolg oder kein Bild hochgeladen
      */
     @PostMapping("/bild")
-    public String handleFileUpload( @RequestParam("bild") MultipartFile bild,            
-                                    @RequestParam("titel") String titel ) {
+    public String bildHochladen( @RequestParam("bild")  MultipartFile bild,            
+                                 @RequestParam("titel") String        titel ) {
+        
+        if ( bild.isEmpty() ) {
+            
+            LOG.warn( "Leeres Bild hochgeladen." );
+            return "redirect:keinBild";
+        }
                                     
         final int    kByte       = (int) ( bild.getSize() / 1024 );
         final String dateiName   = bild.getOriginalFilename();
@@ -48,11 +54,28 @@ public class DateiUploadController {
     }    
 
     
+    /**
+     * Seite für erfolgreichen Upload anzeigen
+     * 
+     * @return Name von Template-Datei "hochgeladen.html"
+     */
     @GetMapping("/erfolg")
     public String erfolg() {
         
         return "hochgeladen";
     }
+
     
+    /**
+     * Seite für Versuch ein "leeres" Bild hochzuladen anzeigen.
+     * 
+     * @return Name von Template-Datei "keinbild.html"
+     */    
+    @GetMapping("/keinBild")
+    public String keinBild() {
+        
+        return "keinbild";
+    }
+
 
 }
