@@ -24,6 +24,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Tagenbuch_FatJar
-        path: target/tagebuch-*-SNAPSHOT.jar
+        path: target/bildergallerie-*-SNAPSHOT.jar
         if-no-files-found: error
         retention-days: 3

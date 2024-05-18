@@ -129,6 +129,7 @@ public class BildEntity {
         if ( _bild == null ) {
 
             try {
+                
                 bildGroesseKB = (int)( _bild.length() / 1024 );
             }
             catch ( SQLException ex ) {
@@ -144,16 +145,14 @@ public class BildEntity {
     /**
      * Methode gibt Hashwert für das Objekt zurück.
      *
-     * @return Hashwert des Objekts, in den alle Attribute bis auf
-     *         den Primärschlüssel einfließen.
+     * @return Hashwert des Objekts
      */
     @Override
     public int hashCode() {
 
         return Objects.hash( _titel,
-                             _zeitpunktErzeugung,
-                             _bild
-                           );
+                             _zeitpunktErzeugung );
+                           
     }
 
 
