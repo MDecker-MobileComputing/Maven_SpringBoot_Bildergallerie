@@ -1,10 +1,6 @@
 package de.eldecker.dhbw.spring.bildergallerie.logik;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +79,7 @@ public class BeispielDatenImporter implements ApplicationRunner {
     
     
     /**
-     * Bild aus Ressourcenordner in DB laden.
+     * Bild aus Ressourcenordner {@code demo-bilder} in DB laden.
      * 
      * @param titel Name des Bildes, z.B. "Hund und Katze"
      * 
@@ -115,7 +111,7 @@ public class BeispielDatenImporter implements ApplicationRunner {
      * 
      * @return Byte-Array mit Binärdaten von Bild
      * 
-     * @throws Exception Ein-/Ausgabefehler
+     * @throws IOException Ein-/Ausgabefehler
      */
     private byte[] ladeBildRessource( String dateiname ) throws IOException {
         

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+import de.eldecker.dhbw.spring.bildergallerie.helferlein.MD5Hasher;
 
 
 /**
@@ -23,15 +24,20 @@ public class BildService {
     
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
+    
+    /** Hilfs-Bean für MD5-Berechnung. */
+    private final MD5Hasher _md5hasher;
             
     
     /**
      * Konstruktor für Dependency Injection.
      */
     @Autowired
-    public BildService( BildRepository bildRepo ) {
+    public BildService( BildRepository bildRepo,
+                        MD5Hasher md5hasher) {
         
-        _bildRepo = bildRepo;
+        _bildRepo  = bildRepo;
+        _md5hasher = md5hasher;
     }
     
     
@@ -50,7 +56,9 @@ public class BildService {
                         
         final Blob blob = BlobProxy.generateProxy( byteArray );
         
-        final BildEntity bild = new BildEntity( titel , blob );
+        final String md5hash = _md5hasher.getHash( byteArray );
+        
+        final BildEntity bild = new BildEntity( titel , blob, md5hash );
         
         final BildEntity ergebnisEntity = _bildRepo.save( bild );
         

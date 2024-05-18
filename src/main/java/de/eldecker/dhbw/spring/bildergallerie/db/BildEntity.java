@@ -50,6 +50,10 @@ public class BildEntity {
     @Lob
     @Column(name = "bild")
     private Blob _bild;
+    
+    /** Hashwert des Bildes (z.B. MD5-Hash), damit man schnell bereits vorhandene Bilder erkennen kann. */
+    @Column(name = "hash")
+    private String _hash;
 
 
     /**
@@ -58,6 +62,7 @@ public class BildEntity {
     public BildEntity() {
 
         _titel              = "";
+        _hash               = "";
         _zeitpunktErzeugung = now();
     }
 
@@ -69,11 +74,14 @@ public class BildEntity {
      * @param titel Names des Bild (von Nutzer eingegeben)
      * 
      * @param bild Bild (Binärdaten)
+     * 
+     * @param hash Hashwert von {@code bild}
      */
-    public BildEntity( String titel, Blob bild ) {
+    public BildEntity( String titel, Blob bild, String hash ) {
     
         _titel = titel;
         _bild  = bild;
+        _hash  = hash;
         
         _zeitpunktErzeugung = now();
     }
@@ -112,6 +120,50 @@ public class BildEntity {
     }
 
 
+    /**
+     * Setter für eigentliches Bild (Binärdaten als BLOB).
+     * 
+     * @param bild Bild 
+     */
+    public void setBild( Blob bild ) {
+        
+        _bild = bild;
+    }
+
+    
+    /**
+     * Getter für eigentliches Bild (Binärdaten als BLOB).
+     * 
+     * @return Bild 
+     */
+    public Blob getBild() {
+        
+        return _bild;
+    }
+    
+    
+    /**
+     * Setter für Hashwert von Bild.
+     * 
+     * @param hash Hashwert von Bild, z.B. MD5-Hash
+     */
+    public void setHash( String hash ) {
+        
+        _hash = hash;
+    }
+
+    
+    /**
+     * Getter für Hashwert von Bild.
+     * 
+     * @return Hashwert von Bilder, z.B. MD5-Hash
+     */
+    public String getHash() {
+        
+        return _hash;
+    }
+
+    
     /**
      * Setter für den Zeitpunkt des Uploads des Bilds.
      *
@@ -169,7 +221,8 @@ public class BildEntity {
     public int hashCode() {
 
         return Objects.hash( _titel,
-                             _zeitpunktErzeugung );
+                             _zeitpunktErzeugung, 
+                             _hash );
                            
     }
 
@@ -200,7 +253,8 @@ public class BildEntity {
         final BildEntity other = (BildEntity) obj;
 
         return Objects.equals( _titel             , other._titel              ) &&
-               Objects.equals( _zeitpunktErzeugung, other._zeitpunktErzeugung );
+               Objects.equals( _zeitpunktErzeugung, other._zeitpunktErzeugung ) &&
+               Objects.equals( _hash              , other._hash               );
     }
 
 
