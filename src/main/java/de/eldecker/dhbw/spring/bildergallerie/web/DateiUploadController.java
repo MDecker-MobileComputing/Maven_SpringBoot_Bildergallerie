@@ -1,6 +1,7 @@
 package de.eldecker.dhbw.spring.bildergallerie.web;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,9 +99,11 @@ public class DateiUploadController {
                 LOG.warn( "Versuch Bild mit Titel \"{}\" hochzuladen, aber es gibt dieses Bild schon in der DB unter der ID={}.", 
                           titelNormal, altesBild.getId() );
                 
-                final String altesBildTitel = altesBild.getTitel();
+                final String        altesBildTitel     = altesBild.getTitel();
+                final LocalDateTime altesBildDatumZeit = altesBild.getZeitpunktErzeugung(); 
                 
-                attributeWeiterleitung.addFlashAttribute( "altes_bild_titel", altesBildTitel );
+                attributeWeiterleitung.addFlashAttribute( "altes_bild_titel"    , altesBildTitel     );
+                attributeWeiterleitung.addFlashAttribute( "altes_bild_datumzeit", altesBildDatumZeit );
                 
                 return "redirect:upload-fehler-bild-schon-vorhanden";
             }                                                

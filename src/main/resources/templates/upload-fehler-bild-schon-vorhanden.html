@@ -13,6 +13,11 @@
     <p>
         Ein Bild mit demselben Hashwert ist bereits unter dem folgenden Namen vorhanden:
         "<span th:text="${altes_bild_titel}"></span>".
+        Es wurde hochgeladen am 
+        <span th:text="${#temporals.format(altes_bild_datumzeit, 'dd. MMM yyyy (EEE)')}"></span>
+        um
+        <span th:text="${#temporals.format(altes_bild_datumzeit, 'hh:MM')}"></span>
+        Uhr.
     </p>
 
     <a href="/hochladen.html">Erneuter Versuch</a>
