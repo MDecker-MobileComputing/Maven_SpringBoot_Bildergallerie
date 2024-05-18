@@ -1,6 +1,7 @@
 package de.eldecker.dhbw.spring.bildergallerie.web;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
@@ -52,7 +53,7 @@ public class DateiUploadController {
      * @param titel Vom Nutzer eingegebener Name für das Bild
      * 
      * @param attributeWeiterleitung Platzhalterwerte für das Template der 
-     *                                Weiterleitungsseite
+     *                               Weiterleitungsseite
      * 
      * @return Weiterleitung auf Folgeseite für Erfolg oder Fehler; 
      *         die Weiterleitungs-Seiten sind alle auch in diesem Controller
@@ -73,10 +74,15 @@ public class DateiUploadController {
         final int    kByte       = (int) ( bytes / 1024 );
         final String dateiName   = bild.getOriginalFilename();
         final String contentType = bild.getContentType();
-        final String titelNormal = titel.trim();
+        String titelNormal = titel.trim();
 
         LOG.info( "Bild hochgeladen: DateiName=\"{}\", ContentType=\"{}\", {} kBytes, Titel=\"{}\"", 
                   dateiName, contentType, kByte, titelNormal ); 
+        
+        if ( titelNormal.isBlank() ) {
+            
+            titelNormal = dateiName;
+        }
         
         try {
         
@@ -94,18 +100,7 @@ public class DateiUploadController {
             }
             catch ( BildSchonVorhandenException ex ) {
 
-                final BildEntity altesBild = ex.getBildEntity();
-                
-                LOG.warn( "Versuch Bild mit Titel \"{}\" hochzuladen, aber es gibt dieses Bild schon in der DB unter der ID={}.", 
-                          titelNormal, altesBild.getId() );
-                
-                final String        altesBildTitel     = altesBild.getTitel();
-                final LocalDateTime altesBildDatumZeit = altesBild.getZeitpunktErzeugung(); 
-                
-                attributeWeiterleitung.addFlashAttribute( "altes_bild_titel"    , altesBildTitel     );
-                attributeWeiterleitung.addFlashAttribute( "altes_bild_datumzeit", altesBildDatumZeit );
-                
-                return "redirect:upload-fehler-bild-schon-vorhanden";
+                return behandleFehlerBildSchonVorhanden( ex, attributeWeiterleitung );
             }                                                
         }
         catch ( IOException ex ) {
@@ -114,6 +109,50 @@ public class DateiUploadController {
             return "redirect:upload-fehler";
         }                       
     }    
+    
+    
+    /**
+     * Behandlung für den Fall, dass das gerade hochgeladene Bild laut Hash-Wert schon in 
+     * der Datenbank enthalten ist.
+     * 
+     * @param ex Exception-Objekt, enthält auch altes Bild
+     * 
+     * @param attributeWeiterleitung Platzhalterwerte für das Template der 
+     *                               Weiterleitungs-Seite
+     * 
+     * @return Weiterleitungs-Seite für diesen Fehlerfall
+     */
+    private String behandleFehlerBildSchonVorhanden( BildSchonVorhandenException ex,
+                                                     RedirectAttributes attributeWeiterleitung ) {
+        
+        final BildEntity altesBild = ex.getBildEntity();
+        
+        LOG.warn( "Versuch ein Bild hochzuladen, aber es gibt dieses Bild schon in der DB unter der ID={}.", 
+                  altesBild.getId() );
+        
+        final String        altesBildTitel     = altesBild.getTitel();
+        final LocalDateTime altesBildDatumZeit = altesBild.getZeitpunktErzeugung(); 
+                        
+        attributeWeiterleitung.addFlashAttribute( "altes_bild_titel"    , altesBildTitel     );
+        attributeWeiterleitung.addFlashAttribute( "altes_bild_datumzeit", altesBildDatumZeit );
+        
+        try {
+        
+            final long altesBildLaenge = altesBild.getBild().length(); 
+            final int kBytes = (int) ( altesBildLaenge / 1024);
+            
+            attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", kBytes );            
+        }
+        catch ( SQLException ex2 ) {
+         
+            LOG.error( "Konnte nicht Länge von bereits in DB vorhandenem Bild (ID={}) auslesen.", 
+                        altesBild.getId(), ex2 );
+            
+            attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", -1 );
+        }        
+        
+        return "redirect:upload-fehler-bild-schon-vorhanden";
+    }
 
     
     /**

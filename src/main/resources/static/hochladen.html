@@ -11,13 +11,19 @@
     <h1>Bildergallerie: Neues Bild hochladen</h1>
 
     <form method="POST" enctype="multipart/form-data" action="app/bild">
+
         <label for="bild_titel" class="fett">Anzeigename für Bild:</label>
         <input type="text" id="bild_titel" name="titel" value="">
         <br>
-        <input type="file" name="bild" accept="image/jpeg, image/png" />
+
+        <input type="file" name="bild" accept="image/jpeg, image/png">
         <br><br>
-        <input type="submit" value="Hochladen" />
-        <input type="reset"  value="Zurücksetzen" />
+
+        <input type="submit" value="Hochladen">
+        <input type="reset"  value="Zurücksetzen">
+        
     </form>
+
+    <p>Wenn kein Anzeigename für das Bild eingegeben wird, dann wird der Dateiname verwendet.</p>
 
 </body>
