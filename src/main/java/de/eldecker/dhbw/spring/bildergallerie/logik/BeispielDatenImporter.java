@@ -91,17 +91,16 @@ public class BeispielDatenImporter implements ApplicationRunner {
             
             final byte[] byteArray = ladeBildRessource( dateiname ); // throws IOException
             
-            final long id = _bildService.bildHochladen( titel, byteArray );
+            final long id = _bildService.bildHochladen( titel, byteArray ); // throws BildSchonVorhandenException
             
             LOG.info( "Demo-Bild \"{}\" unter ID={} abgespeichert.", dateiname, id );            
         }                
-        catch ( IOException ex ) {
+        catch ( IOException | BildSchonVorhandenException ex ) {
             
             LOG.error( "Fehler beim Laden von Bilddatei \"{}\"", dateiname, ex );
         }
     }
-     
-    
+         
     
     /**
      * Hilfsmethode um ein Demo-Bild aus dem Ressource-Ordner {@code src/main/resource/demo-bilder}

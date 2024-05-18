@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Upload-Fehler</title>
+<title>Fehler beim Upload des Bildes: Bild schon vorhanden</title>
 <meta charset="utf-8" >
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css" href="../../styles.css">
 </head>
 <body>
 
-    <h1>Upload-Fehler (Ein-/Ausgabe-Fehler)</h1>
+    <h1>Fehler beim Upload des Bildes: Bild schon vorhanden</h1>
+
+    <p>
+        Ein Bild mit demselben Hashwert ist bereits unter dem folgenden Namen vorhanden:
+        "<span th:text="${altes_bild_titel}"></span>".
+    </p>
 
     <a href="/hochladen.html">Erneuter Versuch</a>
 

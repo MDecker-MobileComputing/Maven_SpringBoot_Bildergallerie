@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
+import de.eldecker.dhbw.spring.bildergallerie.logik.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 
  
@@ -51,7 +53,9 @@ public class DateiUploadController {
      * @param attributeWeiterleitung Platzhalterwerte für das Template der 
      *                                Weiterleitungsseite
      * 
-     * @return Weiterleitung auf Folgeseite für Erfolg oder Fehler
+     * @return Weiterleitung auf Folgeseite für Erfolg oder Fehler; 
+     *         die Weiterleitungs-Seiten sind alle auch in diesem Controller
+     *         definiert
      */
     @PostMapping("/bild")
     public String bildHochladen( @RequestParam("bild")  MultipartFile bild,            
@@ -60,8 +64,8 @@ public class DateiUploadController {
         
         if ( bild.isEmpty() ) {
             
-            LOG.warn( "Leeres Bild hochgeladen." );
-            return "redirect:keinBild";
+            LOG.warn( "Upload mit leerem Bild." );
+            return "redirect:upload-kein-bild";
         }
                                     
         final long   bytes       = bild.getSize();
@@ -77,18 +81,33 @@ public class DateiUploadController {
         
             final byte[] byteArray = bild.getBytes(); // throws IOException
             
-            final long id = _bildService.bildHochladen( titelNormal, byteArray );
+            try {
             
-            LOG.info( "Bild mit Titel \"{}\" unter ID {} in DB gespeichert.", dateiName, id );
-            
-            attributeWeiterleitung.addFlashAttribute( "dateigroesse_kb", kByte );
+                final long id = _bildService.bildHochladen( titelNormal, byteArray ); // throws BildSchonVorhandenException
+                
+                LOG.info( "Bild mit Titel \"{}\" unter ID {} in DB gespeichert.", dateiName, id );
+                
+                attributeWeiterleitung.addFlashAttribute( "dateigroesse_kb", kByte );
 
-            return "redirect:upload-erfolg";
-            
+                return "redirect:upload-erfolg";                
+            }
+            catch ( BildSchonVorhandenException ex ) {
+
+                final BildEntity altesBild = ex.getBildEntity();
+                
+                LOG.warn( "Versuch Bild mit Titel \"{}\" hochzuladen, aber es gibt dieses Bild schon in der DB unter der ID={}.", 
+                          titelNormal, altesBild.getId() );
+                
+                final String altesBildTitel = altesBild.getTitel();
+                
+                attributeWeiterleitung.addFlashAttribute( "altes_bild_titel", altesBildTitel );
+                
+                return "redirect:upload-fehler-bild-schon-vorhanden";
+            }                                                
         }
         catch ( IOException ex ) {
             
-            LOG.error( "Fehler bei Zugriff auf hochgeladene Bilddaten.", ex );
+            LOG.error( "I/O-Fehler bei Zugriff auf hochgeladene Bilddaten.", ex );
             return "redirect:upload-fehler";
         }                       
     }    
@@ -97,7 +116,7 @@ public class DateiUploadController {
     /**
      * Weiterleitungs-Seite für erfolgreichen Upload anzeigen.
      * 
-     * @return Name von Template-Datei "hochgeladen.html"
+     * @return Name von Template-Datei
      */
     @GetMapping("/upload-erfolg")
     public String erfolg() {
@@ -109,19 +128,31 @@ public class DateiUploadController {
     /**
      * Weiterleitungs-Seite für Versuch ein "leeres" Bild hochzuladen anzeigen.
      * 
-     * @return Name von Template-Datei "keinbild.html"
+     * @return Name von Template-Datei
      */    
-    @GetMapping("/upload-keinBild")
+    @GetMapping("/upload-kein-bild")
     public String keinBild() {
         
-        return "upload-fehler-keinBild";
+        return "upload-fehler-kein-bild";
+    }
+    
+    
+    /**
+     * Weiterleitungs-Seite wenn Bild schon in DB vorhanden war.
+     * 
+     * @return Name von Template-Datei
+     */
+    @GetMapping("/upload-fehler-bild-schon-vorhanden")
+    public String bildSchonVorhanden() {
+        
+        return "upload-fehler-bild-schon-vorhanden";
     }
     
     
     /**
      * Weiterleitungs-Seite für Fehler (v.a. I/O-Fehler) beim Upload eines Bilds.
      * 
-     * @return Name von Template-Datei "upload-fehler.html"
+     * @return Name von Template-Datei
      */    
     @GetMapping("/upload-fehler")
     public String fehlerBeimHochladen() {

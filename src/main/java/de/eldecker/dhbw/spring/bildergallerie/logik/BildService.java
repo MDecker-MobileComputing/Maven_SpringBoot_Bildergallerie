@@ -1,6 +1,7 @@
 package de.eldecker.dhbw.spring.bildergallerie.logik;
 
 import java.sql.Blob;
+import java.util.Optional;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.slf4j.Logger;
@@ -42,8 +43,7 @@ public class BildService {
     
     
     /**
-     * Von Nutzer über Webseite hochgeladenes Bild in Datenbank speichern. 
-     * 
+     * Von Nutzer über Webseite hochgeladenes Bild in Datenbank speichern.
      * 
      * @param titel Titel des Bildes (vom Nutzer eingegeben), sollte schon
      *              getrimmt sein
@@ -51,18 +51,30 @@ public class BildService {
      * @param byteArray Byte-Array mit Bilddaten (Binärdaten)
      * 
      * @return ID des neuen Datensatzes 
+     * 
+     * @throws BildSchonVorhandenException Bild mit selbem Hash-Wert ist schon in DB vorhanden
      */
-    public long bildHochladen( String titel, byte[] byteArray ) {
-                        
-        final Blob blob = BlobProxy.generateProxy( byteArray );
+    public long bildHochladen( String titel, byte[] byteArray ) throws BildSchonVorhandenException {
         
         final String md5hash = _md5hasher.getHash( byteArray );
         
+        final Optional<BildEntity> altesBildOptional = _bildRepo.findByHash( md5hash );
+        
+        if ( altesBildOptional.isPresent() ) {
+            
+            final BildEntity altesBild = altesBildOptional.get(); 
+            throw new BildSchonVorhandenException( altesBild );
+        }
+        
+        
+        final Blob blob = BlobProxy.generateProxy( byteArray );
+                        
         final BildEntity bild = new BildEntity( titel , blob, md5hash );
         
         final BildEntity ergebnisEntity = _bildRepo.save( bild );
         
         return ergebnisEntity.getId();
     }
+     
     
 }

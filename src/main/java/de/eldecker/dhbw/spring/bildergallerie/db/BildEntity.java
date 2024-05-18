@@ -6,7 +6,6 @@ import static java.time.LocalDateTime.now;
 import java.sql.Blob;
 import java.sql.SQLException;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Entity;
@@ -22,6 +21,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Datenbank-Entität für ein Bild.
+ * <br><br>
+ * 
+ * Die Objektvariablen sind NICHT mit {@code COLUMN} annotiert, es werden also die
+ * Variablennamen als Spaltennamen in der Tabelle {@code BILDER} übernommen.
+ * <br><br>
+ * 
+ * Siehe auch 
+ * <a href="https://thorben-janssen.com/mapping-blobs-and-clobs-with-hibernate-and-jpa/">diese Seite</a>
+ * für Verwendung von BLOB-Spalten bei JPA.
  */
 @Entity
 @Table( name = "BILDER" )
@@ -35,25 +43,20 @@ public class BildEntity {
      */
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id")
-    private Long _id;
+    private Long id;
 
     /** Titel/Name des Bildes, z.B. "Katze im Garten". */
-    @Column(name = "titel")
-    private String _titel;
+    private String titel;
 
     /** Zeitpunkt (Datum + Uhrzeit) des Uploads des Bilds. */
-    @Column(name = "zeitpunkt_erzeugung")
-    private LocalDateTime _zeitpunktErzeugung;
+    private LocalDateTime zeitpunktErzeugung;
 
     /** Bild als "Binary Large Object" (BLOB). */
     @Lob
-    @Column(name = "bild")
-    private Blob _bild;
+    private Blob bild;
     
     /** Hashwert des Bildes (z.B. MD5-Hash), damit man schnell bereits vorhandene Bilder erkennen kann. */
-    @Column(name = "hash")
-    private String _hash;
+    private String hash;
 
 
     /**
@@ -61,9 +64,9 @@ public class BildEntity {
      */
     public BildEntity() {
 
-        _titel              = "";
-        _hash               = "";
-        _zeitpunktErzeugung = now();
+        titel              = "";
+        hash               = "";
+        zeitpunktErzeugung = now();
     }
 
 
@@ -79,11 +82,11 @@ public class BildEntity {
      */
     public BildEntity( String titel, Blob bild, String hash ) {
     
-        _titel = titel;
-        _bild  = bild;
-        _hash  = hash;
+        this.titel = titel;
+        this.bild  = bild;
+        this.hash  = hash;
         
-        _zeitpunktErzeugung = now();
+        zeitpunktErzeugung = now();
     }
     
     
@@ -94,7 +97,7 @@ public class BildEntity {
      */
     public Long getId() {
 
-        return _id;
+        return id;
     }
 
 
@@ -105,7 +108,7 @@ public class BildEntity {
      */
     public String getTitel() {
 
-        return _titel;
+        return titel;
     }
 
 
@@ -116,7 +119,7 @@ public class BildEntity {
      */
     public void setTitel( String titel ) {
 
-        _titel = titel;
+        this.titel = titel;
     }
 
 
@@ -127,7 +130,7 @@ public class BildEntity {
      */
     public void setBild( Blob bild ) {
         
-        _bild = bild;
+        this.bild = bild;
     }
 
     
@@ -138,7 +141,7 @@ public class BildEntity {
      */
     public Blob getBild() {
         
-        return _bild;
+        return bild;
     }
     
     
@@ -149,7 +152,7 @@ public class BildEntity {
      */
     public void setHash( String hash ) {
         
-        _hash = hash;
+        this.hash = hash;
     }
 
     
@@ -160,7 +163,7 @@ public class BildEntity {
      */
     public String getHash() {
         
-        return _hash;
+        return hash;
     }
 
     
@@ -171,7 +174,7 @@ public class BildEntity {
      */
     public void setZeitpunktErzeugung( LocalDateTime zeitpunktErzeugung ) {
 
-        _zeitpunktErzeugung = zeitpunktErzeugung;
+        this.zeitpunktErzeugung = zeitpunktErzeugung;
     }
 
 
@@ -182,7 +185,7 @@ public class BildEntity {
      */
     public LocalDateTime getZeitpunktErzeugung() {
 
-        return _zeitpunktErzeugung;
+        return zeitpunktErzeugung;
     }
 
 
@@ -196,11 +199,11 @@ public class BildEntity {
     public String toString() {
 
         int bildGroesseKB = -1;
-        if ( _bild == null ) {
+        if ( bild == null ) {
 
             try {
                 
-                bildGroesseKB = (int)( _bild.length() / 1024 );
+                bildGroesseKB = (int)( bild.length() / 1024 );
             }
             catch ( SQLException ex ) {
 
@@ -208,7 +211,7 @@ public class BildEntity {
             }
         }
 
-        return "Bild \"" + _titel + "\", " + bildGroesseKB + " KB";
+        return "Bild \"" + titel + "\", " + bildGroesseKB + " KB";
     }
 
 
@@ -220,9 +223,9 @@ public class BildEntity {
     @Override
     public int hashCode() {
 
-        return Objects.hash( _titel,
-                             _zeitpunktErzeugung, 
-                             _hash );
+        return Objects.hash( titel,
+                             zeitpunktErzeugung, 
+                             hash );
                            
     }
 
@@ -252,9 +255,9 @@ public class BildEntity {
 
         final BildEntity other = (BildEntity) obj;
 
-        return Objects.equals( _titel             , other._titel              ) &&
-               Objects.equals( _zeitpunktErzeugung, other._zeitpunktErzeugung ) &&
-               Objects.equals( _hash              , other._hash               );
+        return Objects.equals( titel             , other.titel              ) &&
+               Objects.equals( zeitpunktErzeugung, other.zeitpunktErzeugung ) &&
+               Objects.equals( hash              , other.hash               );
     }
 
 
