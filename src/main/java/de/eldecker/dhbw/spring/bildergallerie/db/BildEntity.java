@@ -48,6 +48,7 @@ public class BildEntity {
 
     /** Bild als "Binary Large Object" (BLOB). */
     @Lob
+    @Column(name = "bild")
     private Blob _bild;
 
 
@@ -61,6 +62,23 @@ public class BildEntity {
     }
 
 
+    /** 
+     * Neues Bildobjekt erzeugen, als Zeitpunkt wird die aktuelle
+     * Systemzeit gesetzt. 
+     * 
+     * @param titel Names des Bild (von Nutzer eingegeben)
+     * 
+     * @param bild Bild (Binärdaten)
+     */
+    public BildEntity( String titel, Blob bild ) {
+    
+        _titel = titel;
+        _bild  = bild;
+        
+        _zeitpunktErzeugung = now();
+    }
+    
+    
     /**
      * Getter für Primärschlüssel
      *
