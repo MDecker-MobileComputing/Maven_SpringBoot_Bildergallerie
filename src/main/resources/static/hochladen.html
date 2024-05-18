@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <title>Bildergallerie: Neues Bild hochladen</title>
+    <meta charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+    <h1>Bildergallerie: Neues Bild hochladen</h1>
+
+    <form method="POST" enctype="multipart/form-data" action="app/bild">
+        <label for="bild_titel" class="fett">Anzeigename für Bild:</label>
+        <input type="text" id="bild_titel" name="titel" value="">
+        <br>
+        <input type="file" name="bild" accept="image/jpeg, image/png" />
+        <br><br>
+        <input type="submit" value="Hochladen" />
+        <input type="reset"  value="Zurücksetzen" />
+    </form>
+
+</body>
