@@ -15,7 +15,9 @@
 
     <ul>
         <li th:each="tag : ${tag_liste}">
-            <span th:text="${tag.getName()}"></span>
+            <a th:href="@{/app/tag/{tag_id}(tag_id=${tag.getId()})}">
+                <span th:text="${tag.getName()}"></span>
+            </a>
         </li>
     </ul>
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="'Tag-Details: ' + ${tag.getName()}"></title>
+<meta charset="utf-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../../styles.css">
+</head>
+<body>
+
+    <h1>Tag-Details: "<span th:text="${tag.getName()}"></span>"</h1>
+
+    <p>Anzahl Bilder mit diesem Tag: <span th:text="${ #lists.size( tag.getBilder() ) }"></span></p>
+    <br>
+
+    <ul>
+        <li th:each="bild : ${tag.getBilder()}">
+            <a th:href="@{/app/einzelbild/{bild_id}(bild_id=${bild.getId()})}">
+                <span th:text="${bild.getTitel()}"></span>
+            </a>
+        </li>
+    </ul>
+
+</body>

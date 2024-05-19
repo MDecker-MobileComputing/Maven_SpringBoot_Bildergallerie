@@ -81,6 +81,10 @@ public class BildEntity {
      * Da ein Tag auch mehreren Bildern zugeordnet sein kann, brauchen wir eine "Many-to-Many"-Relation,
      * für die auch eine Join-Tabelle in der DB erforderlich ist.
      * Siehe auch Attribut "bilder" in {@Link TagEntity}.
+     * <br><br>
+     * 
+     * Doku zu Many-to-Many-Relation mit JAP: 
+     * <a href="https://www.baeldung.com/jpa-many-to-many">siehe hier auf baeldung.com</a>
      */
     @ManyToMany 
     @JoinTable( name               = "tag_zu_bild",      
@@ -424,7 +428,7 @@ public class BildEntity {
      *
      * @param obj Objekt, mit dem dieses Objekt verglichen wird
      *
-     * @return  {@code true}, wenn die Objekte gleich sind, sonst {@code false}
+     * @return {@code true}, wenn die Objekte gleich sind, sonst {@code false}
      */
     @Override
     public boolean equals( Object obj ) {

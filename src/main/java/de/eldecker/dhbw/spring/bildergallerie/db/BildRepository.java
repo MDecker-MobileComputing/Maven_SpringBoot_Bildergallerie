@@ -15,7 +15,8 @@ public interface BildRepository extends JpaRepository<BildEntity, Long> {
 
     /**
      * Bild anhand Hash-Wert suchen (Attribut "Hash" für die Tabelle hat deshalb
-     * einen Index). 
+     * einen Index). "Spring Data JPA" erkennt anhand dem Methodennamen was
+     * die Methode tun soll.
      * 
      * @param hash Hashwert des Bildes
      * 

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+import de.eldecker.dhbw.spring.bildergallerie.db.TagRepository;
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
@@ -44,15 +45,13 @@ public class ThymeleafController {
 	
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
-    
-    
+        
     /** Service-Bean mit Geschäftslogik für Bilder. */
     private final BildService _bildService;
     
-    /** Service-Bean mit Geschäftslogik von Tags. */
-    private final TagService _tagService;
-    
-
+    /** Repo-Bean für Zugriff auf Datenbanktabelle mit Tags. */
+    private final TagRepository _tagRepo;
+        
     
     /**
      * Konstruktor für Dependency Injection.
@@ -60,11 +59,11 @@ public class ThymeleafController {
     @Autowired
     public ThymeleafController( BildRepository bildRepo,
                                 BildService bildService,
-                                TagService tagService ) {                                
-    	
+                                TagRepository tagRepo ) {
+
+        _tagRepo     = tagRepo;
     	_bildRepo    = bildRepo;
-    	_bildService = bildService;
-    	_tagService  = tagService; 
+    	_bildService = bildService;    
     }
 	
     
@@ -165,11 +164,44 @@ public class ThymeleafController {
     @GetMapping( "/tags" )
     public String tagsAnzeigen( Model model ) {
            
-        final List<TagEntity> tagListe = _tagService.getListeTags();
-        
+        final List<TagEntity> tagListe = _tagRepo.findAllSortByNameIgnoreCase();
+                
         model.addAttribute( "tag_liste", tagListe );
         
         return "tag-liste";
     }
+    
+    
+    /**
+     * Details für einzelnen Tag anzeigen (insb. Liste aller Bilder, die diesem Tag zugeordnet sind).
+     *  
+     * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
+     *              geschrieben werden. 
+     *              
+     * @param id URL-Parameter mit ID des Tags; wenn kein Tag mit dieser ID gefunden wird, dann wird
+     *           auf eine Fehlerseite weitergeleitet.
+     *  
+     * @return Template-Datei "tag-details" oder "tag-details-fehler"
+     */
+    @GetMapping( "/tag/{id}")
+    public String tagAnzeigen( Model model,       
+                               @PathVariable("id") long id ) {
+        
+        final Optional<TagEntity> tagOptional = _tagRepo.findById( id );
+        if ( tagOptional.isEmpty() ) {
+            
+            final String fehlerText = format( "Kein Tag mit ID=%d gefunden.", id );            
+            LOG.error( fehlerText );
+            model.addAttribute( "fehlermeldung", fehlerText );
+            
+            return "tag-details-fehler";
+            
+        } else {
+        
+            final TagEntity tag = tagOptional.get();
+            model.addAttribute( "tag", tag );
+            return "tag-details";
+        }                
+    }    
     
 }

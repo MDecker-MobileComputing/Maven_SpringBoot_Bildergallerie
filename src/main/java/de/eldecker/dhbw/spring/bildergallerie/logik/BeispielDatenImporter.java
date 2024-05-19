@@ -84,10 +84,13 @@ public class BeispielDatenImporter implements ApplicationRunner {
             final TagEntity tagTier      = tagAnlegen( "Tier"      );
             final TagEntity tagZeichnung = tagAnlegen( "Zeichnung" );
             
+            tagAnlegen( "test" ); // Tag ohne Bilder
+            
             final BildEntity bild1 = ladeDemoBild( "Hund und Katze"      , "dog-5883275_1280.jpg"     );
             final BildEntity bild2 = ladeDemoBild( "Russische Nacktkatze", "mammals-3210053_1280.jpg" );
-            final BildEntity bild3 = ladeDemoBild( "Gezeichnete Katze"   , "cute-7270285_1280.png"    );
+            final BildEntity bild3 = ladeDemoBild( "Katze (Zeichnung)"   , "cute-7270285_1280.png"    );
             final BildEntity bild4 = ladeDemoBild( "Rakete um Erde"      , "rocket-3972.gif"          );
+            final BildEntity bild5 = ladeDemoBild( "Hund (Labrador)"     , "dog-8198719_1280.jpg"     );
                                     
             final long anzahlBilderNachher = _bildRepo.count();
             final long anzahlTags          = _tagRepo.count();
@@ -99,6 +102,7 @@ public class BeispielDatenImporter implements ApplicationRunner {
             _bildService.tagsHinzufuegen( bild2, tagKatze, tagTier               );
             _bildService.tagsHinzufuegen( bild3, tagKatze, tagTier, tagZeichnung );
             _bildService.tagsHinzufuegen( bild4, tagZeichnung                    );
+            _bildService.tagsHinzufuegen( bild5, tagHund, tagTier                );
         }
     }
         
