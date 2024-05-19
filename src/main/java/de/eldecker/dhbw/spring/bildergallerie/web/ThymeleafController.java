@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 import de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum;
 

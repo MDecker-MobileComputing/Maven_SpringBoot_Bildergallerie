@@ -2,6 +2,8 @@ package de.eldecker.dhbw.spring.bildergallerie.db;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
+
 import java.util.Optional;
 
 

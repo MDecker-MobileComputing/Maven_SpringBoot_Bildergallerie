@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;

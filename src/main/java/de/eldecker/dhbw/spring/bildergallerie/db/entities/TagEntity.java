@@ -1,4 +1,4 @@
-package de.eldecker.dhbw.spring.bildergallerie.db;
+package de.eldecker.dhbw.spring.bildergallerie.db.entities;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 

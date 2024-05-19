@@ -11,10 +11,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
-import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
-import de.eldecker.dhbw.spring.bildergallerie.db.TagEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.TagRepository;
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
 
@@ -90,7 +90,9 @@ public class BeispielDatenImporter implements ApplicationRunner {
             ladeDemoBild( "Rakete um Erde"      , "rocket-3972.gif"          );
             
             final long anzahlBilderNachher = _bildRepo.count();
-            LOG.info( "Demo-Bilder geladen, DB enthält jetzt {} Bilder.", anzahlBilderNachher );
+            final long anzahlTags          = _tagRepo.count();
+            LOG.info( "Demo-Bilder geladen, DB enthält jetzt {} Bilder und {} Tags.", 
+                      anzahlBilderNachher, anzahlTags );
         }
     }
         

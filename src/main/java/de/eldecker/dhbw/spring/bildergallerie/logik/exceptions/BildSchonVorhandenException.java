@@ -1,6 +1,6 @@
 package de.eldecker.dhbw.spring.bildergallerie.logik.exceptions;
 
-import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 
 
 /**

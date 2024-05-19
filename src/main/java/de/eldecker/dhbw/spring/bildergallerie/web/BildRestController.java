@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 
 
 /**
