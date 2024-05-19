@@ -1,10 +1,11 @@
 package de.eldecker.dhbw.spring.bildergallerie.logik;
 
-import static java.util.Optional.empty;
-
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.sql.Blob;
 import java.util.Optional;
 
+import org.apache.tika.Tika;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +17,7 @@ import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
 import de.eldecker.dhbw.spring.bildergallerie.helferlein.MD5Hasher;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
-import net.sf.jmimemagic.Magic;
-import net.sf.jmimemagic.MagicException;
-import net.sf.jmimemagic.MagicMatch;
-import net.sf.jmimemagic.MagicMatchNotFoundException;
-import net.sf.jmimemagic.MagicParseException;
+
 
 /**
  * Diese Klasse enthält die Methoden mit der Geschäftslogik für 
@@ -37,6 +34,9 @@ public class BildService {
     
     /** Hilfs-Bean für MD5-Berechnung. */
     private final MD5Hasher _md5hasher;
+    
+    /** Objekt für Bestimmung MIME-Type von Grafikdatei (Apache Tika). */
+    private final Tika _tika = new Tika();
     
     
     /**
@@ -64,7 +64,8 @@ public class BildService {
      * 
      * @throws BildSchonVorhandenException Bild mit selbem Hash-Wert ist schon in DB vorhanden
      */
-    public long bildHochladen( String titel, byte[] byteArray ) throws BildSchonVorhandenException, MimeTypeException {
+    public long bildHochladen( String titel, byte[] byteArray ) 
+                                    throws BildSchonVorhandenException, MimeTypeException {
         
         final String md5hash = _md5hasher.getHash( byteArray );
         
@@ -92,35 +93,43 @@ public class BildService {
     
     
     /**
-     * MIME-Typ von hochgeladenem Bild bestimmen. Intern wird die Bibliothek "jMimeMagic"
+     * MIME-Typ von hochgeladenem Bild bestimmen. Intern wird die Bibliothek "Apache Tika"
      * verwendet.
      * 
      * @param byteArray Byte-Array mit Binärdaten des Bildes 
      * 
      * @param titel Titel des Bilds wird für Exception benötigt
      * 
-     * @return Mime-Typ des Bilds. Beispiele: "image/jpeg", "image/png", "image/gif"
+     * @return MIME-Typ des Bilds. 
+     *         Unterstützte Werte: "image/jpeg", "image/png", "image/gif", "image/svg+xml"
      * 
-     * @throws MimeTypeException Mime-Typ konnt nicht bestimmt werden
+     * @throws MimeTypeException MIME-Typ konnte nicht bestimmt werden oder ist keiner
+     *                           der unterstützten Typen (siehe Beschreibung möglicher
+     *                           {@code return}-Werte). 
      */
     private String mimeTypeBestimmen( byte[] byteArray, String titel ) throws MimeTypeException { 
                                                           
         try {
-        
-            final MagicMatch match = Magic.getMagicMatch( byteArray, false );
+
+            final ByteArrayInputStream inputStream = new ByteArrayInputStream( byteArray );
             
-            final String mimeString = match.getMimeType();
+            final String mimeType = _tika.detect( inputStream ); // throws IOException            
+            switch ( mimeType ) {
             
-            LOG.info( "Dateityp-Beschreibung: {}", match.getDescription() );
+                case "image/jpeg"   :
+                case "image/png"    :
+                case "image/gif"    :
+                case "image/svg+xml": return mimeType;
+                    
+                default: throw new MimeTypeException( "Nicht unterstützter MIME-Type \"" + mimeType + "\"" );
+            }                        
+        }
+        catch ( IOException ex ) {
             
-            return mimeString;
-                
-        } catch ( MagicParseException | MagicMatchNotFoundException | MagicException ex ) {
-            
-            LOG.error( "MIME-Type von Grafikdatei konnte nicht bestimmt werden.", ex );            
-            
-            throw new MimeTypeException( titel );
-        }                
+            throw new MimeTypeException( 
+                           "Ein-/Ausgabe-Fehler bei Bestimmung MIME-Type von Bild mit Titel \"" + titel + "\"", 
+                           ex );
+        }        
     }     
     
 }

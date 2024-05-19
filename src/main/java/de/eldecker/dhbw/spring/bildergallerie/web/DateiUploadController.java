@@ -105,7 +105,7 @@ public class DateiUploadController {
             }       
             catch ( MimeTypeException ex ) {
                 
-                final String fehlerText = "MIME-Typ von Bild konnte nicht bestimmt werden."; 
+                final String fehlerText = "Fehler bei MIME-Type-Bestimmung von Bild: " + ex.getMessage(); 
                 LOG.error( fehlerText, ex );
                 attributeWeiterleitung.addFlashAttribute( "fehlermeldung", fehlerText );
                 
