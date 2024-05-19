@@ -15,8 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
-import de.eldecker.dhbw.spring.bildergallerie.logik.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
+import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
+import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
 
  
 /**
@@ -101,11 +102,22 @@ public class DateiUploadController {
             catch ( BildSchonVorhandenException ex ) {
 
                 return behandleFehlerBildSchonVorhanden( ex, attributeWeiterleitung );
-            }                                                
+            }       
+            catch ( MimeTypeException ex ) {
+                
+                final String fehlerText = "MIME-Typ von Bild konnte nicht bestimmt werden."; 
+                LOG.error( fehlerText, ex );
+                attributeWeiterleitung.addFlashAttribute( "fehlermeldung", fehlerText );
+                
+                return "redirect:upload-fehler";                
+            }
         }
         catch ( IOException ex ) {
             
-            LOG.error( "I/O-Fehler bei Zugriff auf hochgeladene Bilddaten.", ex );
+            final String fehlerText = "Ein-/Ausgabefehler bei Verarbeitung von hochgeladenem Bild: " + ex;            
+            LOG.error( fehlerText, ex );
+            attributeWeiterleitung.addFlashAttribute( "fehlermeldung", fehlerText );
+            
             return "redirect:upload-fehler";
         }                       
     }    
@@ -137,7 +149,7 @@ public class DateiUploadController {
         attributeWeiterleitung.addFlashAttribute( "altes_bild_datumzeit", altesBildDatumZeit );
         
         final long kBytes = altesBild.getBildGroesseKBytes();
-        attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", kBytes );            
+        attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", kBytes );         
         
         return "redirect:upload-fehler-bild-schon-vorhanden";
     }

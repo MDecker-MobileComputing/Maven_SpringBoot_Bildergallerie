@@ -12,6 +12,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
+import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
 
 
 
@@ -95,9 +97,9 @@ public class BeispielDatenImporter implements ApplicationRunner {
             
             LOG.info( "Demo-Bild \"{}\" unter ID={} abgespeichert.", dateiname, id );            
         }                
-        catch ( IOException | BildSchonVorhandenException ex ) {
+        catch ( IOException | BildSchonVorhandenException | MimeTypeException ex ) {
             
-            LOG.error( "Fehler beim Laden von Bilddatei \"{}\"", dateiname, ex );
+            LOG.error( "Fehler beim Laden von Bilddatei \"{}\".", dateiname, ex );
         }
     }
          
