@@ -81,6 +81,7 @@ public class ThymeleafController {
         	model.addAttribute( "bild_titel"    , bild.getTitel()              );
         	model.addAttribute( "bild_datumzeit", bild.getZeitpunktErzeugung() );
         	model.addAttribute( "bild_kBytes"   , bild.getBildGroesseKBytes()  );
+        	model.addAttribute( "bild_id"       , id                           );
         	
         	LOG.info( "Bild für Einzelanzeige gefunden: {}", bild );
         	

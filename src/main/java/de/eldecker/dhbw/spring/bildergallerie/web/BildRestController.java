@@ -2,7 +2,6 @@ package de.eldecker.dhbw.spring.bildergallerie.web;
 
 import static org.springframework.http.MediaType.IMAGE_JPEG;
 
-import java.sql.Blob;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
@@ -21,6 +21,7 @@ import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
  * RestController zu Bereitstellung der Bilder (Binärdaten!).
  */
 @RestController
+@RequestMapping( "/app/" )
 public class BildRestController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger( BildRestController.class );

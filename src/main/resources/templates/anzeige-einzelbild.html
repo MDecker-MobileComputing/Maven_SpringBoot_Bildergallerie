@@ -10,6 +10,9 @@
 
     <h1>Anzeige Einzelbild: <span th:text="${bild_titel}"></span></h1>
 
+    <img th:src="@{/app/bild/{bild_id}(bild_id=${bild_id})}" alt="Bild" width="90%">
+    <br><br>
+
     <p>
         Das Bild wurde am
         <span th:text="${#temporals.format(bild_datumzeit, 'dd. MMM yyyy (EEE)')}"></span>
