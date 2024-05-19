@@ -45,10 +45,10 @@ public class MD5Hasher {
     /**
      * Hashwert für Byte-Array berechnen.
      * 
-     * @param data Zu verhashende Daten (Binärdaten von Bild)
+     * @param byteArray Zu verhashende Daten (Binärdaten von Bild)
      * 
-     * @return Hash-Wert als Hex-String oder leerer String, wenn Hash-Algo nicht
-     *         zur Verfügung steht.
+     * @return Hash-Wert (128 Bit) als Hex-String oder leerer String, wenn Hash-Algo 
+     *         nicht zur Verfügung steht.
      *         Beispiel für MD5-Hash: {@code 158ef3b2b0d2392bd7552cd773323c27}
      */
     public String getHash( byte[] byteArray ) {

@@ -20,4 +20,5 @@ public interface BildRepository extends CrudRepository<BildEntity, Long> {
      *         in der Datenbank existiert, sonst leeres Optional
      */
     Optional<BildEntity> findByHash( String hash );
+
 }

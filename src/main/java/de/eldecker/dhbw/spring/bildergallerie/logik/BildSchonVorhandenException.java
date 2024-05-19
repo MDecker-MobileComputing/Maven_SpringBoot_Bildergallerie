@@ -5,7 +5,8 @@ import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
 
 /**
  * Eigene Exception-Klasse für den Fall, dass versucht wird, ein Bild hochzuladen,
- * das laut Hash-Wert schon in der Datenbank vorhanden ist.
+ * das laut Hash-Wert schon in der Datenbank vorhanden ist. Das Exception-Objekt
+ * kapselt das bereits vorhandene Bild als {@link BildEntity}.
  */
 @SuppressWarnings("serial")
 public class BildSchonVorhandenException extends Exception {

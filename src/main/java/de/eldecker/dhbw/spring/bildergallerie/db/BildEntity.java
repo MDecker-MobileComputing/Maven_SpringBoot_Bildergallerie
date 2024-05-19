@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +77,8 @@ public class BildEntity {
      * 
      * @param titel Names des Bild (von Nutzer eingegeben)
      * 
-     * @param bild Bild (Binärdaten)
+     * @param bild Bild (Binärdaten); muss mit {@code BlobProxy.generateProxy()}
+     *             erzeugt worden sein
      * 
      * @param hash Hashwert von {@code bild}
      */
@@ -126,7 +128,8 @@ public class BildEntity {
     /**
      * Setter für eigentliches Bild (Binärdaten als BLOB).
      * 
-     * @param bild Bild 
+     * @param bild Bild ; muss mit {@code BlobProxy.generateProxy()}
+     *             erzeugt worden sein
      */
     public void setBild( Blob bild ) {
         
@@ -232,6 +235,7 @@ public class BildEntity {
 
     /**
      * Methode prüft, ob das übergebene Objekt gleich diesem Objekt ist.
+     * Für das eigentliche Bild wird der Hash-Wert verglichen.
      *
      * @param obj Objekt, mit dem dieses Objekt verglichen wird
      *

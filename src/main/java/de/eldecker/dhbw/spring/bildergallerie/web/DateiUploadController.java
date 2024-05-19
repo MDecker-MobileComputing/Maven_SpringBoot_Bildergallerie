@@ -57,12 +57,13 @@ public class DateiUploadController {
      * 
      * @return Weiterleitung auf Folgeseite für Erfolg oder Fehler; 
      *         die Weiterleitungs-Seiten sind alle auch in diesem Controller
-     *         definiert
+     *         definiert. Alle zurückgegebenen Weiterleitungen fangen mit
+     *         {@code redirect:} an.
      */
     @PostMapping("/bild")
     public String bildHochladen( @RequestParam("bild")  MultipartFile bild,            
                                  @RequestParam("titel") String        titel,
-                                 RedirectAttributes attributeWeiterleitung ) {
+                                 RedirectAttributes                   attributeWeiterleitung ) {
         
         if ( bild.isEmpty() ) {
             
@@ -201,6 +202,5 @@ public class DateiUploadController {
         
         return "upload-fehler";
     }    
-
 
 }
