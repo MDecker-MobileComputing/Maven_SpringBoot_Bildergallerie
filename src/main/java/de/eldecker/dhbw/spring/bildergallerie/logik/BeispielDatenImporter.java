@@ -97,7 +97,7 @@ public class BeispielDatenImporter implements ApplicationRunner {
             LOG.info( "Demo-Bilder geladen, DB enthält jetzt {} Bilder und {} Tags.", 
                       anzahlBilderNachher, anzahlTags );
             
-            // noch Tags den Bilden hinzufügen
+            // den Bilden noch Tags hinzufügen
             _bildService.tagsHinzufuegen( bild1, tagKatze, tagHund, tagTier      ); 
             _bildService.tagsHinzufuegen( bild2, tagKatze, tagTier               );
             _bildService.tagsHinzufuegen( bild3, tagKatze, tagTier, tagZeichnung );

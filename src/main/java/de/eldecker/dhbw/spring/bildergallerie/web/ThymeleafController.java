@@ -25,7 +25,6 @@ import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 import de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum;
-import de.eldecker.dhbw.spring.bildergallerie.logik.TagService;
 
 
 /**

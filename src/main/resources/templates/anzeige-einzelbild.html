@@ -26,7 +26,13 @@
     <p>
         <span class="fett">Tags:</span>
         <span class="kursiv" th:if="${#sets.isEmpty(bild_tags)}">keine</span>
-        <span th:each="tag : ${bild_tags}" th:text="${tag.getName()} + ' '"></span>
+
+        <span th:each="tag : ${bild_tags}">
+            <a  th:href="@{/app/tag/{tag_id}(tag_id=${tag.getId()})}">
+                <span th:text="${tag.getName()}"></span>
+            </a>
+            &nbsp;
+        </span>
     </p>
 
 </body>
