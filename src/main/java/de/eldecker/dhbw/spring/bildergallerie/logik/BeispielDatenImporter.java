@@ -39,7 +39,7 @@ public class BeispielDatenImporter implements ApplicationRunner {
     
     /** Service-Bean mit Geschäftslogik für Bildern, wird hier zum Speichern von Bildern benötigt. */
     private final BildService _bildService;
-    
+        
     /** Bean zum Laden der Beispielbilder. */
     private final ResourceLoader _resourceLoader;
     

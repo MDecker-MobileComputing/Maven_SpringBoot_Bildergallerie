@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Liste aller Tags</title>
+<meta charset="utf-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../../styles.css">
+</head>
+<body>
+
+    <h1>Liste aller Tags</h1>
+
+    <p>Anzahl Tags: <span th:text="${#lists.size(tag_liste)}"></span></p>
+    <br>    
+
+    <ul>
+        <li th:each="tag : ${tag_liste}">
+            <span th:text="${tag.getName()}"></span>
+        </li>
+    </ul>
+
+</body>

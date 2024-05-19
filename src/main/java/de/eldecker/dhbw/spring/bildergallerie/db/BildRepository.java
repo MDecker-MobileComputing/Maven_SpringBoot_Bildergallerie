@@ -14,7 +14,8 @@ import java.util.Optional;
 public interface BildRepository extends JpaRepository<BildEntity, Long> {
 
     /**
-     * Bild anhand Hashwert suchen.
+     * Bild anhand Hash-Wert suchen (Attribut "Hash" für die Tabelle hat deshalb
+     * einen Index). 
      * 
      * @param hash Hashwert des Bildes
      * 

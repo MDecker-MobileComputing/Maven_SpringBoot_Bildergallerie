@@ -3,6 +3,7 @@ package de.eldecker.dhbw.spring.bildergallerie.logik;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Blob;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.tika.Tika;
@@ -135,7 +136,7 @@ public class BildService {
      * 
      * @return Iterator mit allen Bildern in der Datenbank, sortiert nach {@code sortierAttribut}
      */
-    public Iterable<BildEntity> getBildListe( SortierAttributEnum sortierAttribut ) {
+    public List<BildEntity> getBildListe( SortierAttributEnum sortierAttribut ) {
         
         final String techNameAttribut = sortierAttribut.getEntityAttributName();
         

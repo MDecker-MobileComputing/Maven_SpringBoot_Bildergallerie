@@ -6,6 +6,7 @@ import static de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum.Z
 
 import static java.lang.String.format;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -20,13 +21,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 import de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum;
+import de.eldecker.dhbw.spring.bildergallerie.logik.TagService;
 
 
 /**
  * Controller (kein RestController!), der die Anfragen für die Thymeleaf-Views bearbeitet.
  * Alle Pfade beginnen mit {@code /app/}.
+ * <br><br>
+ * 
  * Die Mapping-Methoden geben immer den Namen (ohne Datei-Endung) der darzustellenden Template-Datei
  * zurück, der im Ordner {@code src/main/resources/templates/} gesucht wird. 
  */ 
@@ -40,8 +45,13 @@ public class ThymeleafController {
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
     
-    /** Service-Bean für Zugriff auf Bilder. */
+    
+    /** Service-Bean mit Geschäftslogik für Bilder. */
     private final BildService _bildService;
+    
+    /** Service-Bean mit Geschäftslogik von Tags. */
+    private final TagService _tagService;
+    
 
     
     /**
@@ -49,10 +59,12 @@ public class ThymeleafController {
      */
     @Autowired
     public ThymeleafController( BildRepository bildRepo,
-                                BildService bildService ) {
+                                BildService bildService,
+                                TagService tagService ) {                                
     	
     	_bildRepo    = bildRepo;
     	_bildService = bildService;
+    	_tagService  = tagService; 
     }
 	
     
@@ -135,10 +147,29 @@ public class ThymeleafController {
                return "bilder-liste-fehler";                                      
        }
                   
-       final Iterable<BildEntity> bilderIterator = _bildService.getBildListe( sortierAttribut );
+       final List<BildEntity> bilderIterator = _bildService.getBildListe( sortierAttribut );
        model.addAttribute( "bilder_liste", bilderIterator );        
        
        return "bilder-liste";
     }
 	
+    
+    /**
+     * Liste aller Tags anzeigen.
+     * 
+     * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
+     *              geschrieben werden. 
+     *              
+     * @return Template-Datei "tag-liste"              
+     */
+    @GetMapping( "/tags" )
+    public String tagsAnzeigen( Model model ) {
+           
+        final List<TagEntity> tagListe = _tagService.getListeTags();
+        
+        model.addAttribute( "tag_liste", tagListe );
+        
+        return "tag-liste";
+    }
+    
 }
