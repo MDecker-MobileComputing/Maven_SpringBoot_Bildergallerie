@@ -21,5 +21,11 @@
         Uhr hochgeladen und hat eine Größe von
         <span th:text="${#numbers.formatInteger(bild_kBytes, 0, 'POINT')}"></span> kBytes.
     </p>
+    <br>
+
+    <p>
+        <span class="fett">Tags:</span>
+        <span th:each="tag : ${bild_tags}" th:text="${tag.getName()} + ' '"></span>
+    </p>
 
 </body>

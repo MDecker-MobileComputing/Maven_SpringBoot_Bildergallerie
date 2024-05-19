@@ -80,16 +80,15 @@ public class ThymeleafController {
 	 *         gibt
 	 */
     @GetMapping( "/einzelbild/{id}" )
-    public String hauptseiteAnzeigen( Model model,
-    		                          @PathVariable("id") long id ) {
+    public String bildAnzeigen( Model model,
+    		                    @PathVariable("id") long id ) {
     	
     	LOG.info( "Anzeige von Einzelbild mit ID=\"{}\" angefordert.", id );
     	
 		final Optional<BildEntity> bildOptional = _bildRepo.findById( id );
 		if ( bildOptional.isEmpty() ) {
 			
-    		final String fehlertext = 
-    				format( "Bild mit ID %d nicht gefunden.", id );
+    		final String fehlertext = format( "Bild mit ID %d nicht gefunden.", id );     				
 			
 			LOG.error( fehlertext );
 			
@@ -105,6 +104,7 @@ public class ThymeleafController {
         	model.addAttribute( "bild_datumzeit", bild.getZeitpunktErzeugung() );
         	model.addAttribute( "bild_kBytes"   , bild.getBildGroesseKBytes()  );
         	model.addAttribute( "bild_id"       , id                           );
+        	model.addAttribute( "bild_tags"     , bild.getTags()               );
         	
         	LOG.info( "Bild für Einzelanzeige gefunden: {}", bild );
         	
