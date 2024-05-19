@@ -73,6 +73,8 @@ public class BeispielDatenImporter implements ApplicationRunner {
             
             ladeDemoBild( "Hund und Katze"      , "dog-5883275_1280.jpg"     );
             ladeDemoBild( "Russische Nacktkatze", "mammals-3210053_1280.jpg" );
+            ladeDemoBild( "Gezeichnete Katze"   , "cute-7270285_1280.png"    );
+            ladeDemoBild( "Rakete um Erde"      , "rocket-3972.gif"          );
             
             final long anzahlBilderNachher = _bildRepo.count();
             LOG.info( "Demo-Bilder geladen, DB enthält jetzt {} Bilder.", anzahlBilderNachher );
