@@ -58,6 +58,9 @@ public class BildEntity {
     
     /** Hashwert des Bildes (z.B. MD5-Hash), damit man schnell bereits vorhandene Bilder erkennen kann. */
     private String hash;
+    
+    /** MIME-Typ des Bildes, z.B. "image/jpeg". Wird benötigt, damit Browser das Bild richtig darstellt. */
+    private String mimeTyp;
 
 
     /**
@@ -67,6 +70,7 @@ public class BildEntity {
 
         titel              = "";
         hash               = "";
+        mimeTyp            = "";
         zeitpunktErzeugung = now();
     }
 
@@ -81,12 +85,15 @@ public class BildEntity {
      *             erzeugt worden sein
      * 
      * @param hash Hashwert von {@code bild}
+     * 
+     * @param hash mimeTyp MIME-Typ, z.B. "image/jpeg"
      */
-    public BildEntity( String titel, Blob bild, String hash ) {
+    public BildEntity( String titel, Blob bild, String hash, String mimeTyp ) {
     
-        this.titel = titel;
-        this.bild  = bild;
-        this.hash  = hash;
+        this.titel   = titel;
+        this.bild    = bild;
+        this.hash    = hash;
+        this.mimeTyp = mimeTyp;
         
         zeitpunktErzeugung = now();
     }
@@ -275,19 +282,42 @@ public class BildEntity {
         return zeitpunktErzeugung;
     }
 
+        
+    /**
+     * Getter für MIME-Typ von Bild, z.B. "image/jpeg"
+     * 
+     * @return MIME-Typ von Bild
+     */
+    public String getMimeTyp() {
+        
+        return mimeTyp;
+    }
+
+    
+    /**
+     * Setter für MIME-Typ von Bild, z.B. "image/jpeg"
+     * 
+     * @param mimeTyp MIME-Typ von Bild
+     */
+    public void setMimeTyp( String mimeTyp ) {
+        
+        this.mimeTyp = mimeTyp;
+    }
+
 
     /**
      * Methode erzeugt eine String-Repräsentation des Objekts.
      *
      * @return String mit Name/Titel des Bilds und Größe des Bilds
-     *         in Kilobyte (KB).
+     *         in Kilobyte (KB) und MIME-Typ (z.B. "image/jpeg").
      */
     @Override
     public String toString() {
 
-        int bildGroesseKB = getBildGroesseKBytes();
+        final int bildGroesseKB = getBildGroesseKBytes();
 
-        return "Bild \"" + titel + "\", " + bildGroesseKB + " KB";
+        return String.format( "Bild \"%s\", %d kByte, MIME-Type=%s.", 
+                              titel, bildGroesseKB, mimeTyp );
     }
 
 
@@ -301,8 +331,8 @@ public class BildEntity {
 
         return Objects.hash( titel,
                              zeitpunktErzeugung, 
-                             hash );
-                           
+                             hash,
+                             mimeTyp );                           
     }
 
 
@@ -334,7 +364,8 @@ public class BildEntity {
 
         return Objects.equals( titel             , other.titel              ) &&
                Objects.equals( zeitpunktErzeugung, other.zeitpunktErzeugung ) &&
-               Objects.equals( hash              , other.hash               );
+               Objects.equals( hash              , other.hash               ) &&
+               Objects.equals( mimeTyp           , other.mimeTyp            );
     }
 
 

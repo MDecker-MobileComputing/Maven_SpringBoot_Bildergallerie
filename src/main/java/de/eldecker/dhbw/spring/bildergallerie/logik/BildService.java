@@ -78,13 +78,12 @@ public class BildService {
         }
         
         
-        final String mimeTypeOptional = mimeTypeBestimmen( byteArray, titel ); // throws MimeTypeException
-        
-        LOG.info( "MIME-Type von Bild: " + mimeTypeOptional );
+        final String mimeTyp = mimeTypeBestimmen( byteArray, titel ); // throws MimeTypeException        
+        LOG.info( "MIME-Type von Bild: " + mimeTyp );
         
         final Blob blob = BlobProxy.generateProxy( byteArray );
                         
-        final BildEntity bild = new BildEntity( titel , blob, md5hash );
+        final BildEntity bild = new BildEntity( titel , blob, md5hash, mimeTyp );
         
         final BildEntity ergebnisEntity = _bildRepo.save( bild );
         
