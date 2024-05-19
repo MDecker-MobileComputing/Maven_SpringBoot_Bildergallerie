@@ -7,8 +7,6 @@ import java.util.Optional;
 
 import org.apache.tika.Tika;
 import org.hibernate.engine.jdbc.BlobProxy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +23,6 @@ import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException
  */
 @Service
 public class BildService {
-
-    private final static Logger LOG = LoggerFactory.getLogger( BildService.class );
-    
     
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
@@ -60,12 +55,12 @@ public class BildService {
      * 
      * @param byteArray Byte-Array mit Bilddaten (Binärdaten)
      * 
-     * @return ID des neuen Datensatzes 
+     * @return Neu erzeugtes Bild
      * 
      * @throws BildSchonVorhandenException Bild mit selbem Hash-Wert ist schon in DB vorhanden
      */
-    public long bildHochladen( String titel, byte[] byteArray ) 
-                                    throws BildSchonVorhandenException, MimeTypeException {
+    public BildEntity bildHochladen( String titel, byte[] byteArray ) 
+                                     throws BildSchonVorhandenException, MimeTypeException {
         
         final String md5hash = _md5hasher.getHash( byteArray );
         
@@ -76,18 +71,16 @@ public class BildService {
             final BildEntity altesBild = altesBildOptional.get(); 
             throw new BildSchonVorhandenException( altesBild );
         }
-        
-        
+                
         final String mimeTyp = mimeTypeBestimmen( byteArray, titel ); // throws MimeTypeException        
-        LOG.info( "MIME-Type von Bild: " + mimeTyp );
         
         final Blob blob = BlobProxy.generateProxy( byteArray );
                         
         final BildEntity bild = new BildEntity( titel , blob, md5hash, mimeTyp );
         
-        final BildEntity ergebnisEntity = _bildRepo.save( bild );
+        final BildEntity ergebnisEntity = _bildRepo.save( bild ); // eigentliches Speichern in DB
         
-        return ergebnisEntity.getId();
+        return ergebnisEntity;
     }
     
     

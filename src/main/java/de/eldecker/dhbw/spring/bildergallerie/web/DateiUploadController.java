@@ -91,12 +91,13 @@ public class DateiUploadController {
             
             try {
             
-                final long id = _bildService.bildHochladen( titelNormal, byteArray ); // throws BildSchonVorhandenException
+                final BildEntity bildEntity = _bildService.bildHochladen( titelNormal, byteArray ); // throws BildSchonVorhandenException
                 
-                LOG.info( "Bild mit Titel \"{}\" unter ID {} in DB gespeichert.", dateiName, id );
+                LOG.info( "Bild mit Titel \"{}\" unter ID {} in DB gespeichert.", dateiName, bildEntity.getId() );
                 
-                attributeWeiterleitung.addFlashAttribute( "dateigroesse_kb", kByte );
-                attributeWeiterleitung.addFlashAttribute( "bild_id"        , id    );
+                attributeWeiterleitung.addFlashAttribute( "dateigroesse_kb", kByte                   );
+                attributeWeiterleitung.addFlashAttribute( "bild_id"        , bildEntity.getId()      );
+                attributeWeiterleitung.addFlashAttribute( "mime_type"      , bildEntity.getMimeTyp() );
 
                 return "redirect:upload-erfolg";                
             }

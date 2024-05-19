@@ -10,7 +10,12 @@
 
     <h1>Bild hochgeladen</h1>
 
-    <p>Das Bild wurde erfolgreich hochgeladen ( <span th:text="${dateigroesse_kb}"></span> kBytes ).</p>
+    <p>Das Bild wurde erfolgreich hochgeladen 
+        ( 
+            <span th:text="${dateigroesse_kb}"></span> kBytes, 
+            MIME-Typ: <span th:text="${mime_type}"></span> 
+        ).
+    </p>
 
     <a th:href="@{/app/einzelbild/{bild_id}(bild_id=${bild_id})}">Seite mit dem Bild</a>
     <br><br><br>

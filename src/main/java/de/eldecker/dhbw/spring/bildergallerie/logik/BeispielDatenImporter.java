@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
@@ -95,9 +96,9 @@ public class BeispielDatenImporter implements ApplicationRunner {
             
             final byte[] byteArray = ladeBildRessource( dateiname ); // throws IOException
             
-            final long id = _bildService.bildHochladen( titel, byteArray ); // throws BildSchonVorhandenException
+           final BildEntity bild = _bildService.bildHochladen( titel, byteArray ); // throws BildSchonVorhandenException
             
-            LOG.info( "Demo-Bild \"{}\" unter ID={} abgespeichert.", dateiname, id );            
+            LOG.info( "Demo-Bild \"{}\" unter ID={} abgespeichert.", dateiname, bild.getId() );            
         }                
         catch ( IOException | BildSchonVorhandenException | MimeTypeException ex ) {
             
