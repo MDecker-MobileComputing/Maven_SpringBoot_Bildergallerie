@@ -62,8 +62,7 @@ public class ThymeleafController {
 	 * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
 	 *              geschrieben werden.
 	 *               
-	 * @param id Pfadparameter "id" mit ID (Primärschlüssel) des anzuzeigenden
-	 *           Bildes
+	 * @param id Pfadparameter "id" mit ID (Primärschlüssel) des anzuzeigenden Bildes           
 	 * 
 	 * @return Template-Datei "anzeige-einzelbild" wenn es kein Bild mit {@code id}
 	 *         gibt

@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -36,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * für Verwendung von BLOB-Spalten bei JPA.
  */
 @Entity
-@Table( name = "BILDER" )
+@Table(name = "BILDER", indexes = {@Index(name = "index_hash", columnList = "hash")})
 public class BildEntity {
 
     private final static Logger LOG = LoggerFactory.getLogger( BildEntity.class );
@@ -60,7 +61,10 @@ public class BildEntity {
     @Lob
     private Blob bild;
     
-    /** Hashwert des Bildes (z.B. MD5-Hash), damit man schnell bereits vorhandene Bilder erkennen kann. */
+    /** 
+     * Hashwert des Bildes (z.B. MD5-Hash), damit man schnell bereits vorhandene Bilder erkennen kann;
+     * für dieses Attribut gibt es einen DB-Index. 
+     */
     private String hash;
     
     /** MIME-Typ des Bildes, z.B. "image/jpeg". Wird benötigt, damit Browser das Bild richtig darstellt. */

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+import de.eldecker.dhbw.spring.bildergallerie.db.TagEntity;
+import de.eldecker.dhbw.spring.bildergallerie.db.TagRepository;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
 
@@ -32,6 +34,9 @@ public class BeispielDatenImporter implements ApplicationRunner {
     /** Repository-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
     
+    /** Repository-Bean für Zugriff auf Datenbanktabelle mit Tags. */
+    private final TagRepository _tagRepo;
+    
     /** Service-Bean mit Geschäftslogik für Bildern, wird hier zum Speichern von Bildern benötigt. */
     private final BildService _bildService;
     
@@ -44,10 +49,12 @@ public class BeispielDatenImporter implements ApplicationRunner {
      */
     @Autowired
     public BeispielDatenImporter( BildRepository bildRepo,
+                                  TagRepository tagRepo,
                                   ResourceLoader resourceLoader,
                                   BildService bildService ) {
         
         _bildRepo       = bildRepo;
+        _tagRepo        = tagRepo;
         _resourceLoader = resourceLoader;
         _bildService    = bildService;
     }
@@ -72,6 +79,11 @@ public class BeispielDatenImporter implements ApplicationRunner {
             
             LOG.info( "Die Datenbank enthält keine Bilder, versuche deshalb, Demo-Daten zu importieren." );
             
+            final long tagIdKatze     = tagAnlegen( "Katze"     );
+            final long tagIdHund      = tagAnlegen( "Hund"      );
+            final long tagIdTier      = tagAnlegen( "Tier"      );
+            final long tagIdZeichnung = tagAnlegen( "Zeichnung" );
+            
             ladeDemoBild( "Hund und Katze"      , "dog-5883275_1280.jpg"     );
             ladeDemoBild( "Russische Nacktkatze", "mammals-3210053_1280.jpg" );
             ladeDemoBild( "Gezeichnete Katze"   , "cute-7270285_1280.png"    );
@@ -81,7 +93,7 @@ public class BeispielDatenImporter implements ApplicationRunner {
             LOG.info( "Demo-Bilder geladen, DB enthält jetzt {} Bilder.", anzahlBilderNachher );
         }
     }
-    
+        
     
     /**
      * Bild aus Ressourcenordner {@code demo-bilder} in DB laden.
@@ -127,4 +139,18 @@ public class BeispielDatenImporter implements ApplicationRunner {
     }
     
     
+    /**
+     * Neuen Tag auf Datenbank anlegen.
+     * 
+     * @param name Anzeigename (ist auch gleichzeitig Technischer Name) des Tags
+     * 
+     * @return ID (Primärschlüssel) des Tags
+     */
+    private long tagAnlegen( String name ) {
+     
+        final TagEntity tag = new TagEntity( name );
+
+        return _tagRepo.save(tag ).getId();        
+    }
+        
 }
