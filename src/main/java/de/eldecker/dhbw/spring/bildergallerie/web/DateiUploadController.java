@@ -96,6 +96,7 @@ public class DateiUploadController {
                 LOG.info( "Bild mit Titel \"{}\" unter ID {} in DB gespeichert.", dateiName, id );
                 
                 attributeWeiterleitung.addFlashAttribute( "dateigroesse_kb", kByte );
+                attributeWeiterleitung.addFlashAttribute( "bild_id"        , id    );
 
                 return "redirect:upload-erfolg";                
             }

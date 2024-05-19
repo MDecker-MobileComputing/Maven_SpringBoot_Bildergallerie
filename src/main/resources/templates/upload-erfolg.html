@@ -12,7 +12,8 @@
 
     <p>Das Bild wurde erfolgreich hochgeladen ( <span th:text="${dateigroesse_kb}"></span> kBytes ).</p>
 
-    <br>
+    <a th:href="@{/app/einzelbild/{bild_id}(bild_id=${bild_id})}">Seite mit dem Bild</a>
+    <br><br><br>
 
     <a href="/hochladen.html">Noch ein Bild hochladen</a>
 
