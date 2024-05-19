@@ -79,20 +79,26 @@ public class BeispielDatenImporter implements ApplicationRunner {
             
             LOG.info( "Die Datenbank enthält keine Bilder, versuche deshalb, Demo-Daten zu importieren." );
             
-            final long tagIdKatze     = tagAnlegen( "Katze"     );
-            final long tagIdHund      = tagAnlegen( "Hund"      );
-            final long tagIdTier      = tagAnlegen( "Tier"      );
-            final long tagIdZeichnung = tagAnlegen( "Zeichnung" );
+            final TagEntity tagKatze     = tagAnlegen( "Katze"     );
+            final TagEntity tagHund      = tagAnlegen( "Hund"      );
+            final TagEntity tagTier      = tagAnlegen( "Tier"      );
+            final TagEntity tagZeichnung = tagAnlegen( "Zeichnung" );
             
-            ladeDemoBild( "Hund und Katze"      , "dog-5883275_1280.jpg"     );
-            ladeDemoBild( "Russische Nacktkatze", "mammals-3210053_1280.jpg" );
-            ladeDemoBild( "Gezeichnete Katze"   , "cute-7270285_1280.png"    );
-            ladeDemoBild( "Rakete um Erde"      , "rocket-3972.gif"          );
-            
+            final BildEntity bild1 = ladeDemoBild( "Hund und Katze"      , "dog-5883275_1280.jpg"     );
+            final BildEntity bild2 = ladeDemoBild( "Russische Nacktkatze", "mammals-3210053_1280.jpg" );
+            final BildEntity bild3 = ladeDemoBild( "Gezeichnete Katze"   , "cute-7270285_1280.png"    );
+            final BildEntity bild4 = ladeDemoBild( "Rakete um Erde"      , "rocket-3972.gif"          );
+                                    
             final long anzahlBilderNachher = _bildRepo.count();
             final long anzahlTags          = _tagRepo.count();
             LOG.info( "Demo-Bilder geladen, DB enthält jetzt {} Bilder und {} Tags.", 
                       anzahlBilderNachher, anzahlTags );
+            
+            // noch Tags den Bilden hinzufügen
+            _bildService.tagsHinzufuegen( bild1, tagKatze, tagHund, tagTier      ); 
+            _bildService.tagsHinzufuegen( bild2, tagKatze, tagTier               );
+            _bildService.tagsHinzufuegen( bild3, tagKatze, tagTier, tagZeichnung );
+            _bildService.tagsHinzufuegen( bild4, tagZeichnung                    );
         }
     }
         
@@ -103,20 +109,25 @@ public class BeispielDatenImporter implements ApplicationRunner {
      * @param titel Name des Bildes, z.B. "Hund und Katze"
      * 
      * @param dateiname Dateiname im Ordner {@code demo-bilder}
+     * 
+     * @return Erzeugtes Bild; ist {@code null} wenn Bild nicht erzeugt werden konnte.
      */
-    private void ladeDemoBild( String titel, String dateiname ) {
+    private BildEntity ladeDemoBild( String titel, String dateiname ) {
         
         try {
             
             final byte[] byteArray = ladeBildRessource( dateiname ); // throws IOException
             
-           final BildEntity bild = _bildService.bildHochladen( titel, byteArray ); // throws BildSchonVorhandenException
+            final BildEntity bild = _bildService.bildHochladen( titel, byteArray ); // throws BildSchonVorhandenException
             
-            LOG.info( "Demo-Bild \"{}\" unter ID={} abgespeichert.", dateiname, bild.getId() );            
+            LOG.info( "Demo-Bild \"{}\" unter ID={} abgespeichert.", dateiname, bild.getId() );   
+            
+            return bild;
         }                
         catch ( IOException | BildSchonVorhandenException | MimeTypeException ex ) {
             
             LOG.error( "Fehler beim Laden von Bilddatei \"{}\".", dateiname, ex );
+            return null;
         }
     }
          
@@ -146,13 +157,13 @@ public class BeispielDatenImporter implements ApplicationRunner {
      * 
      * @param name Anzeigename (ist auch gleichzeitig Technischer Name) des Tags
      * 
-     * @return ID (Primärschlüssel) des Tags
+     * @return Neuer Tag
      */
-    private long tagAnlegen( String name ) {
+    private TagEntity tagAnlegen( String name ) {
      
         final TagEntity tag = new TagEntity( name );
 
-        return _tagRepo.save(tag ).getId();        
+        return _tagRepo.save(tag );        
     }
         
 }

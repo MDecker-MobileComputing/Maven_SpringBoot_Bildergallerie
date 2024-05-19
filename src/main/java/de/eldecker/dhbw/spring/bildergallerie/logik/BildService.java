@@ -8,12 +8,15 @@ import java.util.Optional;
 
 import org.apache.tika.Tika;
 import org.hibernate.engine.jdbc.BlobProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
+import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 import de.eldecker.dhbw.spring.bildergallerie.helferlein.MD5Hasher;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
@@ -25,6 +28,9 @@ import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException
  */
 @Service
 public class BildService {
+    
+    private final static Logger LOG = LoggerFactory.getLogger( BildService.class );
+    
     
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
@@ -143,6 +149,32 @@ public class BildService {
         final Sort sort = Sort.by( techNameAttribut );
         
         return _bildRepo.findAll( sort );
+    }
+    
+    
+    /**
+     * Ein Tag einem Bild hinzufügen. Es wird keine Exception geworfen, wenn {@code tag}
+     * schon {@code bild} zugeweisen war.
+     * 
+     * @param bild Bild, das einen neuen Tag bekommen soll.
+     * 
+     * @param tags Ein oder mehrere Tags, die dem Bild hinzugefügt werden sollen
+     * 
+     * @return Bild nach Hinzufügen von {@code tag}
+     */
+    public BildEntity tagsHinzufuegen( BildEntity bild, TagEntity... tags ) {
+        
+        for ( TagEntity tag : tags ) {
+            
+            final boolean tagDazu = bild.addTag( tag );            
+            if ( tagDazu == false ) {
+                
+                LOG.warn( "Tag \"{}\" war schon Bild mit ID={} zugewiesen.", 
+                          tag.getName(), bild.getId() );
+            }
+        }
+        
+        return _bildRepo.save(bild);
     }
     
 }

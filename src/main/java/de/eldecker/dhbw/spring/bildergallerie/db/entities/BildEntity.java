@@ -8,13 +8,18 @@ import java.sql.SQLException;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +74,19 @@ public class BildEntity {
     
     /** MIME-Typ des Bildes, z.B. "image/jpeg". Wird benötigt, damit Browser das Bild richtig darstellt. */
     private String mimeTyp;
+    
+
+    /**
+     * Ein Bild kann keine, ein oder mehrere Tags zugeordnet bekommen.
+     * Da ein Tag auch mehreren Bildern zugeordnet sein kann, brauchen wir eine "Many-to-Many"-Relation,
+     * für die auch eine Join-Tabelle in der DB erforderlich ist.
+     * Siehe auch Attribut "bilder" in {@Link TagEntity}.
+     */
+    @ManyToMany 
+    @JoinTable( name               = "tag_zu_bild",      
+                joinColumns        = @JoinColumn(name = "bild_id"),
+                inverseJoinColumns = @JoinColumn(name = "tag_id") )
+    private Set<TagEntity> tags;
 
 
     /**
@@ -325,6 +343,49 @@ public class BildEntity {
         return mimeTyp.replaceFirst( "image/", "" );
     }
     
+        
+    /**
+     * Getter für die Tags, die dem aufrufenden Bild zugewiesen sind.
+     *  
+     * @return Menge der Tags (kann auch leer sein)
+     */
+    public Set<TagEntity> getTags() {
+        
+        return tags;
+    }
+
+
+    /**
+     * Getter für die Tags, die dem aufrufenden Bild zugewiesen sind.
+     * 
+     * @param tags Menge der Tags (kann auch leer sein)
+     */
+    public void setTags( Set<TagEntity> tags ) {
+        
+        this.tags = tags;
+    }
+    
+    
+    /**
+     * Hilfsmethode, um dem Bild ein Tag zuzuordnen. 
+     * 
+     * @param tag Tag, das dem Bild zugeordnet werden soll. 
+     * 
+     * @return {@code true} wenn dieses Tag dem Bild noch nicht zugeordnet war.
+     */
+    public boolean addTag( TagEntity tag ) {
+        
+        if ( tags == null ) {
+            
+            tags = new HashSet<>( 5 );
+            return tags.add( tag );
+            
+        } else {
+            
+            return tags.add( tag );
+        }
+    }
+
 
     /**
      * Methode erzeugt eine String-Repräsentation des Objekts.

@@ -3,11 +3,13 @@ package de.eldecker.dhbw.spring.bildergallerie.db.entities;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 
@@ -31,6 +33,13 @@ public class TagEntity {
     * Name des Tags, z.B. "Hund"; für dieses Attribut gibt es einen DB-Index.
     */
    private String name;
+   
+   
+   /**
+    * Siehe Attribut "tags" in {@link BildEntity}.
+    */
+   @ManyToMany (mappedBy = "tags")
+   private Set<BildEntity> bilder;   
    
    
    /**
@@ -81,6 +90,17 @@ public class TagEntity {
        this.name = name;
    }
     
+      
+   /**
+    * Getter für die Menge der Bilder, die dieses Tag zugewiesen haben.
+    * 
+    * @return Menge von Bildern (kann leer sein)
+    */
+   public Set<BildEntity> getBilder() {
+       
+       return bilder;
+   }
+
    
    /**
     * String-Repräsentation des Objekts.
