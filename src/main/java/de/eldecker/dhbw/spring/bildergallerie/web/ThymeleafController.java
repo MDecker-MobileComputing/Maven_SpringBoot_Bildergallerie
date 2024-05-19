@@ -1,9 +1,7 @@
 package de.eldecker.dhbw.spring.bildergallerie.web;
 
-import static java.lang.Long.parseLong;
 import static java.lang.String.format;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -31,6 +29,7 @@ public class ThymeleafController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger( ThymeleafController.class );
 	
+	
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
 
@@ -51,56 +50,42 @@ public class ThymeleafController {
 	 * @param model  Objekt, in das die Werte für die Platzhalter in der Template-Datei
 	 *               geschrieben werden.
 	 *               
-	 * @param idStr Pfadparameter "id" mit ID (Primärschlüssel) des anzuzeigenden
-	 *              Bildes
+	 * @param id Pfadparameter "id" mit ID (Primärschlüssel) des anzuzeigenden
+	 *           Bildes
 	 * 
-	 * @return Template-Datei "anzeige-einzelbild" oder (wenn {@code idStr} nicht nach
-	 *         {@code long} geparst werden kann oder es kein Bild mit {@code idStr}
-	 *         gibt) "anzeige-einzelbild-fehler"
+	 * @return Template-Datei "anzeige-einzelbild" wenn es kein Bild mit {@code id}
+	 *         gibt
 	 */
     @GetMapping( "/einzelbild/{id}" )
     public String hauptseiteAnzeigen( Model model,
-    		                          @PathVariable("id") String idStr ) {
+    		                          @PathVariable("id") long id ) {
     	
-    	LOG.info( "Anzeige von Einzelbild mit ID=\"{}\" angefordert.", idStr );
+    	LOG.info( "Anzeige von Einzelbild mit ID=\"{}\" angefordert.", id );
     	
-    	try {
-    	
-    		final long id = parseLong( idStr );
+		final Optional<BildEntity> bildOptional = _bildRepo.findById( id );
+		if ( bildOptional.isEmpty() ) {
+			
+    		final String fehlertext = 
+    				format( "Bild mit ID %d nicht gefunden.", id );
+			
+			LOG.error( fehlertext );
+			
+    		model.addAttribute( "fehlermeldung", fehlertext );
     		
-    		final Optional<BildEntity> bildOptional = _bildRepo.findById( id );
-    		if ( bildOptional.isEmpty() ) {
-    			
-        		final String fehlertext = 
-        				format( "Bild mit ID %d nicht gefunden.", id );
-    			
-    			LOG.error( fehlertext );
-    			
-        		model.addAttribute( "fehlermeldung", fehlertext );
-        		
-        		return "anzeige-einzelbild-fehler";
-    		}
+    		return "anzeige-einzelbild-fehler";
     		
+		} else { // Bild gefunden
+			
     		final BildEntity bild = bildOptional.get();
     		
         	model.addAttribute( "bild_titel"    , bild.getTitel()              );
         	model.addAttribute( "bild_datumzeit", bild.getZeitpunktErzeugung() );
         	model.addAttribute( "bild_kBytes"   , bild.getBildGroesseKBytes()  );
-    	}
-    	catch ( NumberFormatException ex ) {
-    	
-    		final String fehlertext = 
-    				format( "Für Einzelbildanzeige übergebene ID=\"%s\" ist kein gültiger long-Wert.", 
-    						idStr );
-    		
-    		LOG.error( fehlertext );
-    		
-    		model.addAttribute( "fehlermeldung", fehlertext );
-    		
-    		return "anzeige-einzelbild-fehler";
-    	}
-    	
-    	return "anzeige-einzelbild";
+        	
+        	LOG.info( "Bild für Einzelanzeige gefunden: {}", bild );
+        	
+        	return "anzeige-einzelbild";
+		}
     }
 	
 }

@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 public class BildEntity {
 
     private final static Logger LOG = LoggerFactory.getLogger( BildEntity.class );
+    
 
     /**
      * Primärschlüssel, muss von uns nicht selbst befüllt werden, deshalb
@@ -148,15 +149,14 @@ public class BildEntity {
     
     
     /**
-     * Hilfsmethode (kein Getter/Setter für persistiertes Attribut):
+     * Hilfsmethode: Größe Bild in Bytes abfagen.
      * 
-     * @return Größe des Bildes in kByte oder {@code -1} wenn die Größe des
-     *         Bildes wegen Datenbank-Exception nicht ausgelesen werden kann.
-     *         Wenn das Bild noch nicht gesetzt ist, dann wird {@code 0}
-     *         zurückgegeben.
+     * @return Größe des Bilds in Byte, {@code 0} wenn Bild noch nicht vorhanden,
+     *         {@code -1} wenn {@code SQLException} bei Zugriff auf Bild.
+     *             
      */
-    public int getBildGroesseKBytes() {
-     
+    public int getBildGroesseBytes() {
+    	
     	if ( getBild() == null ) {
     		
     		LOG.warn( "Zugriff auf Bildgröße von Bild mit ID={}, aber Bild noch nicht vorhanden", 
@@ -166,13 +166,68 @@ public class BildEntity {
     	
     	try {
     		
-    		return (int) ( getBild().length() / 1024 ); // length() throws SQLException
+    		return (int) getBild().length(); // length() throws SQLException
     	}
     	catch ( SQLException ex ) {
     	
     		LOG.error( "Exception beim Auslesen von Bildgröße für Bild mit ID={}.", 
     				   getId(), ex ) ;
     		return -1;
+    	}
+    }
+    
+    
+    /**
+     * Hilfsmethode: Größe Bild in kBytes abfagen.
+     * <br><br>
+     * 
+     * Intern wird die Methode {@link #getBildGroesseBytes()} verwendet.
+     * 
+     * @return Größe des Bildes in kByte oder {@code -1} wenn die Größe des
+     *         Bildes wegen {@code SQLException} nicht ausgelesen werden kann.
+     *         Wenn das Bild nicht vorhanden ist, dann wird {@code 0}
+     *         zurückgegeben.
+     */
+    public int getBildGroesseKBytes() {
+     
+    	final int anzahlBytes = getBildGroesseBytes();
+    	if ( anzahlBytes <= 0 ) {
+    		
+    		return anzahlBytes;
+    		
+    	} else {
+    		
+    		return anzahlBytes / 1024;
+    	}
+    }
+    
+    
+    /**
+     * Hilfsmethode: Bild als Byte-Array zurückgeben.
+     * 
+     * @return Byte-Array mit Binärdaten von Bild, oder leerer Array
+     *         wenn Fehler aufgetreten (aber nicht {@code null}).
+     */
+    public byte[] getBildBytes() {
+    	
+    	final int anzahlBytes = getBildGroesseBytes();
+    	if ( anzahlBytes <= 0 ) {
+    		
+    		return new byte[0];
+    	}
+    	
+    	try {
+    	
+    		final Blob blob = getBild();
+    		byte[] blobAsBytes = blob.getBytes( 1, anzahlBytes );
+    		
+    		return blobAsBytes;
+    	}
+    	catch ( SQLException ex ) {
+    		
+    		LOG.error( "DB-Fehler bei Zugriff auf Byte-Array von Bild mit ID={}.", 
+    				   getId(), ex );
+    		return new byte[0];
     	}
     }
     

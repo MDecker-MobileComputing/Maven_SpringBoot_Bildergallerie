@@ -1,7 +1,6 @@
 package de.eldecker.dhbw.spring.bildergallerie.web;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
@@ -20,7 +19,6 @@ import de.eldecker.dhbw.spring.bildergallerie.logik.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 
  
-
 /**
  * Klasse stellt Endpunkt für Upload des Bilds bereit und liefert die entsprechende
  * Antwortseite für den Erfolgs- und Fehlerfall zurück.
@@ -30,6 +28,7 @@ import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 public class DateiUploadController {
 
     private static final Logger LOG = LoggerFactory.getLogger( DateiUploadController.class );
+    
     
     /** Service-Bean mit Geschäftslogik */
     private BildService _bildService;
