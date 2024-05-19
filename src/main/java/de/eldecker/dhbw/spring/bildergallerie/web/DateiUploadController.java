@@ -137,20 +137,8 @@ public class DateiUploadController {
         attributeWeiterleitung.addFlashAttribute( "altes_bild_titel"    , altesBildTitel     );
         attributeWeiterleitung.addFlashAttribute( "altes_bild_datumzeit", altesBildDatumZeit );
         
-        try {
-        
-            final long altesBildLaenge = altesBild.getBild().length(); 
-            final int kBytes = (int) ( altesBildLaenge / 1024);
-            
-            attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", kBytes );            
-        }
-        catch ( SQLException ex2 ) {
-         
-            LOG.error( "Konnte nicht Länge von bereits in DB vorhandenem Bild (ID={}) auslesen.", 
-                        altesBild.getId(), ex2 );
-            
-            attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", -1 );
-        }        
+        final long kBytes = altesBild.getBildGroesseKBytes();
+        attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", kBytes );            
         
         return "redirect:upload-fehler-bild-schon-vorhanden";
     }

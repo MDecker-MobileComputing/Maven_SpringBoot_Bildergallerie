@@ -35,7 +35,7 @@ public class BildService {
      */
     @Autowired
     public BildService( BildRepository bildRepo,
-                        MD5Hasher md5hasher) {
+                        MD5Hasher md5hasher ) {
         
         _bildRepo  = bildRepo;
         _md5hasher = md5hasher;
@@ -43,7 +43,9 @@ public class BildService {
     
     
     /**
-     * Von Nutzer über Webseite hochgeladenes Bild in Datenbank speichern.
+     * Von Nutzer über Webseite hochgeladenes Bild in Datenbank speichern. Es wird zuerst
+     * überprüft, ob schon ein Bild mit demselben Hash-Wert in der Datenbank gespeichert
+     * ist.
      * 
      * @param titel Titel des Bildes (vom Nutzer eingegeben), sollte schon
      *              getrimmt sein

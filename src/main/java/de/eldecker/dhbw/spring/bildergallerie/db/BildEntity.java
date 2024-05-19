@@ -15,7 +15,6 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import org.hibernate.engine.jdbc.BlobProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,6 +148,36 @@ public class BildEntity {
     
     
     /**
+     * Hilfsmethode (kein Getter/Setter für persistiertes Attribut):
+     * 
+     * @return Größe des Bildes in kByte oder {@code -1} wenn die Größe des
+     *         Bildes wegen Datenbank-Exception nicht ausgelesen werden kann.
+     *         Wenn das Bild noch nicht gesetzt ist, dann wird {@code 0}
+     *         zurückgegeben.
+     */
+    public int getBildGroesseKBytes() {
+     
+    	if ( getBild() == null ) {
+    		
+    		LOG.warn( "Zugriff auf Bildgröße von Bild mit ID={}, aber Bild noch nicht vorhanden", 
+    				  getId() );
+    		return 0;
+    	}
+    	
+    	try {
+    		
+    		return (int) ( getBild().length() / 1024 ); // length() throws SQLException
+    	}
+    	catch ( SQLException ex ) {
+    	
+    		LOG.error( "Exception beim Auslesen von Bildgröße für Bild mit ID={}.", 
+    				   getId(), ex ) ;
+    		return -1;
+    	}
+    }
+    
+    
+    /**
      * Setter für Hashwert von Bild.
      * 
      * @param hash Hashwert von Bild, z.B. MD5-Hash
@@ -201,18 +230,7 @@ public class BildEntity {
     @Override
     public String toString() {
 
-        int bildGroesseKB = -1;
-        if ( bild == null ) {
-
-            try {
-                
-                bildGroesseKB = (int)( bild.length() / 1024 );
-            }
-            catch ( SQLException ex ) {
-
-                LOG.error( "Fehler beim Ermitteln der Bildgröße", ex );
-            }
-        }
+        int bildGroesseKB = getBildGroesseKBytes();
 
         return "Bild \"" + titel + "\", " + bildGroesseKB + " KB";
     }
