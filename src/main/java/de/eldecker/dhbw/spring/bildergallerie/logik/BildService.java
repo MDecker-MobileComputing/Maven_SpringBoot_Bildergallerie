@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.apache.tika.Tika;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
@@ -125,5 +126,22 @@ public class BildService {
                            ex );
         }        
     }     
+    
+    
+    /**
+     * Liefert sortierte Liste aller Bilder zurück.
+     * 
+     * @param sortierAttribut Attribut, nach dem die Liste aufsteigend sortiert werden soll.
+     * 
+     * @return Iterator mit allen Bildern in der Datenbank, sortiert nach {@code sortierAttribut}
+     */
+    public Iterable<BildEntity> getBildListe( SortierAttributEnum sortierAttribut ) {
+        
+        final String techNameAttribut = sortierAttribut.getEntityAttributName();
+        
+        final Sort sort = Sort.by( techNameAttribut );
+        
+        return _bildRepo.findAll( sort );
+    }
     
 }

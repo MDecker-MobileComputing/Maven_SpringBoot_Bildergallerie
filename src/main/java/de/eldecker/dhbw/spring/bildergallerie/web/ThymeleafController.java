@@ -1,5 +1,9 @@
 package de.eldecker.dhbw.spring.bildergallerie.web;
 
+import static de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum.MIME_TYP;
+import static de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum.TITEL;
+import static de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum.ZEIT;
+
 import static java.lang.String.format;
 
 import java.util.Optional;
@@ -12,9 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
+import de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum;
 
 
 /**
@@ -32,15 +39,20 @@ public class ThymeleafController {
 	
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
+    
+    /** Service-Bean für Zugriff auf Bilder. */
+    private final BildService _bildService;
 
     
     /**
      * Konstruktor für Dependency Injection.
      */
     @Autowired
-    public ThymeleafController( BildRepository bildRepo ) {
+    public ThymeleafController( BildRepository bildRepo,
+                                BildService bildService ) {
     	
-    	_bildRepo = bildRepo;
+    	_bildRepo    = bildRepo;
+    	_bildService = bildService;
     }
 	
     
@@ -95,17 +107,39 @@ public class ThymeleafController {
      * 
      * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
      *              geschrieben werden. 
+     *              
+     * @param sortiertNach URL-Parameter für Angabe des Attributs, nach dem die Liste
+     *                     sortiert werden soll. Gültige Werte:                        
+     *                     {@code zeit} (Default-Wert), {@code typ}, {@code titel}.
+     *                     Für ungültigen Wert wird eine Fehlerseite angezeigt.              
      * 
-     * @return Template-Datei "bilder-liste
+     * @return Template-Datei "bilder-liste" oder "bilder-liste-fehler"
      */
     @GetMapping( "/liste" )
-    public String listeAnzeigen( Model model ) {
+    public String listeAnzeigen( Model model,
+                                 @RequestParam(defaultValue = "zeit") String sortiertNach ) {
+                
+        sortiertNach = sortiertNach.trim().toLowerCase();
         
-        final Iterable<BildEntity> bilderIterator = _bildRepo.findAll();
-        
-        model.addAttribute( "bilder_liste", bilderIterator );
-        
-        return "bilder-liste";
+       SortierAttributEnum sortierAttribut = ZEIT;
+
+       switch ( sortiertNach ) {
+       
+           case "zeit" : sortierAttribut = ZEIT    ; break;
+           case "typ"  : sortierAttribut = MIME_TYP; break;
+           case "titel": sortierAttribut = TITEL   ; break;
+           default:
+               final String fehlerText = 
+                   format( "Ungültiger Wert \"%s\" für URL-Parameter \"sortiertNach\".", sortiertNach );                        
+               LOG.error( fehlerText );       
+               model.addAttribute( "fehlertext", fehlerText );       
+               return "bilder-liste-fehler";                                      
+       }
+                  
+       final Iterable<BildEntity> bilderIterator = _bildService.getBildListe( sortierAttribut );
+       model.addAttribute( "bilder_liste", bilderIterator );        
+       
+       return "bilder-liste";
     }
 	
 }

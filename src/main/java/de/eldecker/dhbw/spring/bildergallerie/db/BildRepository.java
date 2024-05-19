@@ -1,5 +1,6 @@
 package de.eldecker.dhbw.spring.bildergallerie.db;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
@@ -9,7 +10,7 @@ import java.util.Optional;
  * Zur Laufzeit wird von <i>Spring Data JPA</i> automatisch eine Implementierung
  * dieses Interface erzeugt. 
  */
-public interface BildRepository extends CrudRepository<BildEntity, Long> {
+public interface BildRepository extends JpaRepository<BildEntity, Long> {
 
     /**
      * Bild anhand Hashwert suchen.

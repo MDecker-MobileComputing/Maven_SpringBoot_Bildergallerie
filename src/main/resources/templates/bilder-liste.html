@@ -17,8 +17,8 @@
         <tr>
             <th>Titel</th>
             <th>Größe (kB)</th>
-            <th>MIME-Typ</th>
-            <th>Datum/Zeit</th>
+            <th>Typ</th>
+            <th>Datum und Zeit</th>
             <th>Link</th>
         </tr>
         <tr th:each="bild : ${bilder_liste}">
@@ -27,7 +27,7 @@
 
             <td class="textzentriert" th:text="${#numbers.formatInteger(bild.getBildGroesseKBytes(), 0, 'POINT')}" ></td>
             <td class="textzentriert" th:text="${bild.getBildTyp()}"                                               ></td>
-            
+
             <td>
                 <span th:text="${#temporals.format(bild.getZeitpunktErzeugung(), 'dd.MM.yyyy (EEE)')}"></span>,
                 <span th:text="${#temporals.format(bild.getZeitpunktErzeugung(), 'HH:mm')}"></span> Uhr
