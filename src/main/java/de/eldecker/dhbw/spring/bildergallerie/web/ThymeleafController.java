@@ -47,8 +47,8 @@ public class ThymeleafController {
 	/**
 	 * Einzelnes Bild anhand ID anzeigen.
 	 * 
-	 * @param model  Objekt, in das die Werte für die Platzhalter in der Template-Datei
-	 *               geschrieben werden.
+	 * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
+	 *              geschrieben werden.
 	 *               
 	 * @param id Pfadparameter "id" mit ID (Primärschlüssel) des anzuzeigenden
 	 *           Bildes
@@ -87,6 +87,25 @@ public class ThymeleafController {
         	
         	return "anzeige-einzelbild";
 		}
+    }
+    
+    
+    /**
+     * Liste von Bildern anzeigen.
+     * 
+     * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
+     *              geschrieben werden. 
+     * 
+     * @return Template-Datei "bilder-liste
+     */
+    @GetMapping( "/liste" )
+    public String listeAnzeigen( Model model ) {
+        
+        final Iterable<BildEntity> bilderIterator = _bildRepo.findAll();
+        
+        model.addAttribute( "bilder_liste", bilderIterator );
+        
+        return "bilder-liste";
     }
 	
 }

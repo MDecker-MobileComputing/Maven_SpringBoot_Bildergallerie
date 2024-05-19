@@ -70,17 +70,19 @@ public class BildService {
             
             final BildEntity altesBild = altesBildOptional.get(); 
             throw new BildSchonVorhandenException( altesBild );
-        }
-                
-        final String mimeTyp = mimeTypeBestimmen( byteArray, titel ); // throws MimeTypeException        
-        
-        final Blob blob = BlobProxy.generateProxy( byteArray );
-                        
-        final BildEntity bild = new BildEntity( titel , blob, md5hash, mimeTyp );
-        
-        final BildEntity ergebnisEntity = _bildRepo.save( bild ); // eigentliches Speichern in DB
-        
-        return ergebnisEntity;
+            
+        } else {
+
+            final String mimeTyp = mimeTypeBestimmen( byteArray, titel ); // throws MimeTypeException        
+            
+            final Blob blob = BlobProxy.generateProxy( byteArray );
+                            
+            final BildEntity bild = new BildEntity( titel , blob, md5hash, mimeTyp );
+            
+            final BildEntity ergebnisEntity = _bildRepo.save( bild ); // eigentliches Speichern in DB
+            
+            return ergebnisEntity;                        
+        }                
     }
     
     
@@ -108,12 +110,12 @@ public class BildService {
             final String mimeType = _tika.detect( inputStream ); // throws IOException            
             switch ( mimeType ) {
             
-                case "image/jpeg"   :
-                case "image/png"    :
-                case "image/gif"    :
-                case "image/svg+xml": return mimeType;
+                case "image/jpeg"    :
+                case "image/png"     :
+                case "image/gif"     :
+                case "image/svg+xml" : return mimeType;
                     
-                default: throw new MimeTypeException( "Nicht unterstützter MIME-Type \"" + mimeType + "\"" );
+                default: throw new MimeTypeException( "Nicht unterstützter MIME-Type \"" + mimeType + "\"." );
             }                        
         }
         catch ( IOException ex ) {

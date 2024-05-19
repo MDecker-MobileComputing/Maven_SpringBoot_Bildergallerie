@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Bilderliste</title>
+<meta charset="utf-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../../styles.css">
+</head>
+<body>
+
+    <h1>Bilderliste</h1>
+
+    <p>Anzahl Bilder: <span th:text="${#lists.size(bilder_liste)}"></span></p>
+    <br>
+
+    <table>
+        <tr>
+            <th>Titel</th>
+            <th>Größe (kB)</th>
+            <th>MIME-Typ</th>
+            <th>Datum/Zeit</th>
+            <th>Link</th>
+        </tr>
+        <tr th:each="bild : ${bilder_liste}">
+            
+            <td th:text="${bild.getTitel()}" ></td>
+
+            <td class="textzentriert" th:text="${#numbers.formatInteger(bild.getBildGroesseKBytes(), 0, 'POINT')}" ></td>
+            <td class="textzentriert" th:text="${bild.getBildTyp()}"                                               ></td>
+            
+            <td>
+                <span th:text="${#temporals.format(bild.getZeitpunktErzeugung(), 'dd.MM.yyyy (EEE)')}"></span>,
+                <span th:text="${#temporals.format(bild.getZeitpunktErzeugung(), 'HH:mm')}"></span> Uhr
+            </td>
+
+            <td>
+                <a th:href="@{/app/einzelbild/{bild_id}(bild_id=${bild.getId()})}" >Anzeigen</a>
+            </td>
+
+        </tr>
+
+</body>

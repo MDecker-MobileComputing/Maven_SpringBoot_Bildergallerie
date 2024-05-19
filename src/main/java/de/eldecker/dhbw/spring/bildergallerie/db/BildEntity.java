@@ -27,6 +27,10 @@ import org.slf4j.LoggerFactory;
  * Variablennamen als Spaltennamen in der Tabelle {@code BILDER} übernommen.
  * <br><br>
  * 
+ * Mit "Hilfsmethode" bezeichnete Methoden sind Getter, die (berechnete) Werte zurückgeben,
+ * also nicht Getter für persistierte Attribute sind.
+ * <br><br>
+ * 
  * Siehe auch 
  * <a href="https://thorben-janssen.com/mapping-blobs-and-clobs-with-hibernate-and-jpa/">diese Seite</a>
  * für Verwendung von BLOB-Spalten bei JPA.
@@ -292,7 +296,7 @@ public class BildEntity {
         
         return mimeTyp;
     }
-
+    
     
     /**
      * Setter für MIME-Typ von Bild, z.B. "image/jpeg"
@@ -304,6 +308,19 @@ public class BildEntity {
         this.mimeTyp = mimeTyp;
     }
 
+    
+    /**
+     * Hilfsmethode: Gibt String mit Bildtyp statt MIME-Typ zurück,
+     * also z.B. "jpeg" statt "image/jpeg".
+     * 
+     * @return Typ des Bildes: "jpeg", "png", "gif" oder "svg"
+     */
+    public String getBildTyp() {
+    
+        final String mimeTyp = getMimeTyp();
+        return mimeTyp.replaceFirst( "image/", "" );
+    }
+    
 
     /**
      * Methode erzeugt eine String-Repräsentation des Objekts.

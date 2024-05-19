@@ -40,3 +40,19 @@ textarea, input[type="text"] {
         width: 50%;
     }
 }
+
+
+/* Regeln für Tabellen */
+table {
+    border-collapse: collapse;
+}
+tr {
+    border: 1px solid black;
+}
+td, th {
+    border: 1px solid black;
+    padding: 1em;
+}
+.textzentriert{
+    text-align: center;
+}

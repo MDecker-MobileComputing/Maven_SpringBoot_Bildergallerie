@@ -17,9 +17,9 @@
         Das Bild wurde am
         <span th:text="${#temporals.format(bild_datumzeit, 'dd. MMM yyyy (EEE)')}"></span>
         um
-        <span th:text="${#temporals.format(bild_datumzeit, 'hh:MM')}"></span>
+        <span th:text="${#temporals.format(bild_datumzeit, 'HH:mm')}"></span>
         Uhr hochgeladen und hat eine Größe von
-        <span th:text="${bild_kBytes}"></span> kBytes.
+        <span th:text="${#numbers.formatInteger(bild_kBytes, 0, 'POINT')}"></span> kBytes.
     </p>
 
 </body>
