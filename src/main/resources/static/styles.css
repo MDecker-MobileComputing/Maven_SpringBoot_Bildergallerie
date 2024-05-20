@@ -30,6 +30,9 @@ ul li {
 .abstand_unten {
     margin-bottom: 2.5em;
 }
+.abstand_oben {
+    margin-top: 1em;
+}
 
 
 img {
@@ -37,6 +40,9 @@ img {
     object-fit: contain; /* Bild nicht zuschneiden und Seitenverhältnis beibehalten */
 }
 
+tt {
+    font-size: 125%;
+}
 
 /* Regeln für Tabellen */
 table {

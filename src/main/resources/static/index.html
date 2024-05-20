@@ -41,5 +41,33 @@
     <li><a href="app/tag/1" target="_blank" >Alle Bilder, die den Tag mit ID=1 ("Katze") haben</a></li>
     <li><a href="app/tag/2" target="_blank" >Alle Bilder, die den Tag mit ID=1 ("Hund")  haben</a></li>
   </ul>
+  <br>
+
+  <h2>Actuator-Endpunkte (JSON)</h2>
+  <ul>
+    <li><a href="actuator/health"   target="_blank" >Health</a></li>
+    <li><a href="actuator/info"     target="_blank" >Info (selbst gesetzt in <tt>application.properties</tt>)</a></li>
+    <li><a href="actuator/beans"    target="_blank" >Beans</a></li>
+    <li><a href="actuator/mappings" target="_blank" >Mappings (HTTP-Endpunkte)</a></li>
+    <li>
+      <a href="actuator/metrics"  target="_blank" >Liste der verfügbaren Metriken</a>, z.B.:
+        <ul class="abstand_oben">
+          <li><a href="actuator/metrics/http.server.requests"     target="_blank" >Anzahl der HTTP-Requests</a></li>
+          <li><a href="actuator/metrics/application.started.time" target="_blank" >Wie lange brauchte die Anwendung zum Starten?</a></li>
+          <li><a href="actuator/metrics/system.cpu.count"         target="_blank" >Anzahl der CPU-Kerne</a></li>
+          <li><a href="actuator/metrics/jdbc.connections.max"     target="_blank" >Max. Anzahl Datenbankverbindungen</a></li>
+          <li><a href="actuator/metrics/jvm.memory.used"          tagert="_blank" >Von JVM belegtes RAM</a></li>
+          <li><a href="actuator/metrics/process.uptime"           target="_blank" >Wie länge läuft die JVM schon? (in Sekunden)</a></li>
+          <li><a href="actuator/metrics/jvm.info"                 target="_blank" >Infos zur JVM (Java-Version, Hersteller)</a></li>
+        </ul>
+    </li>
+
+
+  </ul>
+  <br>
+  <p>
+    Die Endpunkte bis auf <tt>actuator/health</tt> müssen in der Datei <tt>application.properties</tt>
+    aktiviert werden (siehe Key <tt>management.endpoints.web.exposure.include</tt>).
+  </p>
 
 </body>
