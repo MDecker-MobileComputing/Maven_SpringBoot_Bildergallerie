@@ -33,7 +33,8 @@ ul li {
 
 
 img {
-    border: 1px solid black;
+    max-height: 80vh;
+    object-fit: contain; /* Bild nicht zuschneiden und Seitenverhältnis beibehalten */
 }
 
 
@@ -50,4 +51,15 @@ td, th {
 }
 .textzentriert{
     text-align: center;
+}
+
+
+input[type="text"] {
+    width: 100%;
+    margin-bottom: 1.5em
+}
+@media (min-width: 800px) {
+    input[type="text"] {
+        width: 50%;
+    }
 }
