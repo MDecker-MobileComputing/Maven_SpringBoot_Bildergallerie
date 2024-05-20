@@ -79,12 +79,15 @@ public class BeispielDatenImporter implements ApplicationRunner {
             
             LOG.info( "Die Datenbank enthält keine Bilder, versuche deshalb, Demo-Daten zu importieren." );
             
+            // Tags definieren (Einzahl)
             final TagEntity tagKatze     = tagAnlegen( "Katze"     );
             final TagEntity tagHund      = tagAnlegen( "Hund"      );
             final TagEntity tagTier      = tagAnlegen( "Tier"      );
             final TagEntity tagZeichnung = tagAnlegen( "Zeichnung" );
             
-            tagAnlegen( "test" ); // Tag ohne Bilder
+            // Tags ohne gleich Bilder zuzuordnen
+            tagAnlegen( "Vogel"    );
+            tagAnlegen( "Nagetier" );
             
             final BildEntity bild1 = ladeDemoBild( "Hund und Katze"      , "dog-5883275_1280.jpg"     );
             final BildEntity bild2 = ladeDemoBild( "Russische Nacktkatze", "mammals-3210053_1280.jpg" );
