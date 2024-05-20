@@ -120,7 +120,7 @@ public class BeispielDatenImporter implements ApplicationRunner {
      * @return Erzeugtes Bild; ist {@code null} wenn Bild nicht erzeugt werden konnte.
      */
     private BildEntity ladeDemoBild( String titel, String dateiname ) {
-        
+    	
         try {
             
             final byte[] byteArray = ladeBildRessource( dateiname ); // throws IOException

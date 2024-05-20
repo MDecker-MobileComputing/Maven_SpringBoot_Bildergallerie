@@ -203,4 +203,23 @@ public class ThymeleafController {
         }                
     }    
     
+    
+    /**
+     * Erzeugt Seite zum Hochladen von einem neuen Bild mit aktueller Tag-Liste.
+     * 
+     * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
+     *              geschrieben werden. 
+     *              
+     * @return "bild-hochladen"
+     */
+    @GetMapping( "/hochladen" )
+    public String bildHochladen( Model model ) {
+    	
+        final List<TagEntity> tagListe = _tagRepo.findAllSortByNameIgnoreCase();
+        
+        model.addAttribute( "tag_namen", tagListe );
+    	
+    	return "bild-hochladen";
+    }
+    
 }

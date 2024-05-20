@@ -1,5 +1,7 @@
 package de.eldecker.dhbw.spring.bildergallerie.logik;
 
+import static java.util.Collections.emptyList;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Blob;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+import de.eldecker.dhbw.spring.bildergallerie.db.TagRepository;
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 import de.eldecker.dhbw.spring.bildergallerie.helferlein.MD5Hasher;
@@ -35,6 +38,9 @@ public class BildService {
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
     
+    /** Repo-Bean für Zugriff auf Datenbanktabelle mit Tags. */
+    private final TagRepository _tagRepo;
+    
     /** Hilfs-Bean für MD5-Berechnung. */
     private final MD5Hasher _md5hasher;
     
@@ -47,10 +53,12 @@ public class BildService {
      */
     @Autowired
     public BildService( BildRepository bildRepo,
-                        MD5Hasher md5hasher ) {
+                        MD5Hasher md5hasher,
+                        TagRepository tagRepo) {
         
         _bildRepo  = bildRepo;
         _md5hasher = md5hasher;
+        _tagRepo   = tagRepo;
     }
     
     
@@ -63,12 +71,15 @@ public class BildService {
      * 
      * @param byteArray Byte-Array mit Bilddaten (Binärdaten)
      * 
+     * @param tagListe Tags, die dem Bild zugeordnet werden sollen; unbekannte
+     *                 Tags werden einfach ignoriert; darf leer sein
+     * 
      * @return Neu erzeugtes Bild
      * 
      * @throws BildSchonVorhandenException Bild mit selbem Hash-Wert ist schon in DB vorhanden
      */
-    public BildEntity bildHochladen( String titel, byte[] byteArray ) 
-                                     throws BildSchonVorhandenException, MimeTypeException {
+    public BildEntity bildHochladen( String titel, byte[] byteArray, List<String> tagListe ) 
+                      throws BildSchonVorhandenException, MimeTypeException {
         
         final String md5hash = _md5hasher.getHash( byteArray );
         
@@ -89,8 +100,61 @@ public class BildService {
             
             final BildEntity ergebnisEntity = _bildRepo.save( bild ); // eigentliches Speichern in DB
             
-            return ergebnisEntity;                        
+            return tagsHinzufuegen( ergebnisEntity, tagListe );                     
         }                
+    }
+    
+    
+    /**
+     * Tags mit Namen aus {@code tagListe} der {@code bildEntity} zuzuordnen
+     * 
+     * @param bildEntity Bild, dem Tags zugeordnet werden sollen.
+     * 
+     * @param tagListe Liste der Namen von Tags, die {@code buildEntity} zugeordnet werden sollen;
+     *                 unbekannte Tags werden ignoriert (es wird aber eine Warnung ins Log
+     *                 geschrieben)
+     * 
+     * @return Bild nach hinzufügen von Tags
+     */
+    public BildEntity tagsHinzufuegen ( BildEntity bildEntity, List<String> tagListe ) {
+    	
+    	if ( tagListe == null || tagListe.isEmpty() ) {
+    		
+    		return bildEntity;
+    	}
+    	
+    	int tagsZugeordnetZaehler = 0;
+    	
+    	for ( String tagName : tagListe ) {
+    		
+    		final Optional<TagEntity> tagEntityOptional = _tagRepo.findByName( tagName );
+    		if ( tagEntityOptional.isEmpty() ) {
+    			
+    			LOG.warn( "Versuch Tag \"{}\" Bild mit ID={} zuzuordnen, aber kein Tag mit diesem Namen gefunden.", 
+    					  tagName, bildEntity.getId() );
+    			
+    		} else {
+    			
+    			final TagEntity tag = tagEntityOptional.get();
+    			bildEntity.addTag( tag );
+    			tagsZugeordnetZaehler++;
+    		}
+    	}
+    	
+    	LOG.info( "Anzahl Tags zu Bild mit ID={} zugeordnet: {}", bildEntity.getId(), tagsZugeordnetZaehler );
+    	
+    	return _bildRepo.save( bildEntity );
+    }
+    
+    
+    /**
+     * Convience-Methode: Überladung von {@link #bildHochladen(String, byte[], List)}
+     * mit leerer Tag-Liste.
+     */
+    public BildEntity bildHochladen( String titel, byte[] byteArray ) 
+                      throws BildSchonVorhandenException, MimeTypeException {
+    	
+    	return bildHochladen( titel, byteArray, emptyList() );
     }
     
     

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <title>Bildergallerie: Neues Bild hochladen</title>
+    <meta charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+</head>
+<body>
+
+    <h1>Bildergallerie: Neues Bild hochladen</h1>
+
+    <p>Wenn kein Anzeigename für das Bild eingegeben wird, dann wird der Dateiname verwendet.</p>
+
+    <p>Unterstützte Grafikformate: jpeg, png, gif, svg</p>
+    <br><br>
+
+    <form method="POST" enctype="multipart/form-data" action="bild">
+
+        <label for="bild_titel" class="fett">Anzeigename für Bild (optional):</label>
+        <input type="text" id="bild_titel" name="titel" value="">
+        <br>
+
+        <input type="file" name="bild" accept="image/jpeg, image/png, image/gif, image/svg+xml">
+        <br><br>
+
+        <h3>Tags:</h3>
+        <div th:each="tag : ${tag_namen}">
+            <label th:for="'id-' + ${tag.getName()}" th:text="${tag.getName()}"></label>
+            <input type="checkbox" th:id="'id-' + ${tag.getName()}" th:name="tagWerte" th:value="${tag.getName()}">
+            <br>
+        </div>
+        <br><br>
+
+        <input type="submit" value="Hochladen">
+        <input type="reset"  value="Zurücksetzen">
+        <br><br>
+
+    </form>
+
+</body>
