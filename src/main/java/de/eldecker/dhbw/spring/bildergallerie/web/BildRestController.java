@@ -1,12 +1,11 @@
 package de.eldecker.dhbw.spring.bildergallerie.web;
 
-import static org.springframework.http.MediaType.IMAGE_JPEG;
-
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,8 +69,10 @@ public class BildRestController {
     
     	final byte[] blobAsBytes = bildEntity.getBildBytes();
 
+    	final MediaType mediaType = MediaType.valueOf( bildEntity.getMimeTyp() );
+    	
         return ResponseEntity.ok()
-        		             .contentType( IMAGE_JPEG )
+        		             .contentType( mediaType )
         		             .body( blobAsBytes );
     }
 	

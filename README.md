@@ -25,5 +25,6 @@ folder [src/main/resources/demo-bilder](src/main/resources/demo-bilder/):
 * [Picture no 3210053](https://pixabay.com/de/photos/s%C3%A4ugetiere-haustier-eins-h%C3%BCbsch-3210053/)     by user [Kirgiz03](https://pixabay.com/de/users/kirgiz03-6995361/).
 * [Picture no 7270285 (drawing)](https://pixabay.com/de/vectors/niedlich-katze-tier-wald-karikatur-7270285/) by user [abdulrashid000](https://pixabay.com/de/users/abdulrashid000-27710353/).
 * [Picture no 3972](https://pixabay.com/de/gifs/rakete-raum-erde-start-raumschiff-3972/)                     by user [Mohamed_hassan](https://pixabay.com/de/users/mohamed_hassan-5229782/).
+* [Picture no 8198719](https://pixabay.com/photos/dog-pet-labrador-canine-mammal-8198719/)                   by user [petfoto](https://pixabay.com/users/petfoto-34205568/).
 
 <br>

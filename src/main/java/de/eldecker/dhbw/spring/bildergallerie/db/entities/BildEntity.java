@@ -116,7 +116,7 @@ public class BildEntity {
      * 
      * @param hash Hashwert von {@code bild}
      * 
-     * @param hash mimeTyp MIME-Typ, z.B. "image/jpeg"
+     * @param mimeTyp MIME-Typ, z.B. "image/jpeg"
      */
     public BildEntity( String titel, Blob bild, String hash, String mimeTyp ) {
     
@@ -339,14 +339,14 @@ public class BildEntity {
      * Hilfsmethode: Gibt String mit Bildtyp statt MIME-Typ zurück,
      * also z.B. "jpeg" statt "image/jpeg".
      * 
-     * @return Typ des Bildes: "jpeg", "png", "gif" oder "svg"
+     * @return Typ des Bildes für Anzeige: "jpeg", "png", "gif" oder "svg"
      */
     public String getBildTyp() {
     
         final String mimeTyp = getMimeTyp();
         return mimeTyp.replaceFirst( "image/", "" );
     }
-    
+
         
     /**
      * Getter für die Tags, die dem aufrufenden Bild zugewiesen sind.
