@@ -19,10 +19,11 @@
             <th>Größe (kB)</th>
             <th>Typ</th>
             <th>Datum und Zeit</th>
+            <th>Tags</th>
             <th>Link</th>
         </tr>
         <tr th:each="bild : ${bilder_liste}">
-            
+
             <td th:text="${bild.getTitel()}" ></td>
 
             <td class="textzentriert" th:text="${#numbers.formatInteger(bild.getBildGroesseKBytes(), 0, 'POINT')}" ></td>
@@ -31,6 +32,15 @@
             <td>
                 <span th:text="${#temporals.format(bild.getZeitpunktErzeugung(), 'dd.MM.yyyy (EEE)')}"></span>,
                 <span th:text="${#temporals.format(bild.getZeitpunktErzeugung(), 'HH:mm')}"></span> Uhr
+            </td>
+
+            <td>
+
+                <a th:each="tag : ${bild.getTags()}" th:href="@{/app/tag/{tag_id}(tag_id=${tag.getId()})}">
+                    <span th:text="${tag.getName()} + ' '"></span>
+                    <br>
+                </a>
+
             </td>
 
             <td>

@@ -112,7 +112,7 @@ public class ThymeleafController {
     
     
     /**
-     * Liste von Bildern anzeigen.
+     * Liste von Bildern in Tabelle anzeigen.
      * 
      * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
      *              geschrieben werden. 
@@ -125,8 +125,8 @@ public class ThymeleafController {
      * @return Template-Datei "bilder-liste" oder "bilder-liste-fehler"
      */
     @GetMapping( "/liste" )
-    public String listeAnzeigen( Model model,
-                                 @RequestParam(defaultValue = "zeit") String sortiertNach ) {
+    public String bildListeAnzeigen( Model model,
+                                     @RequestParam(defaultValue = "zeit") String sortiertNach ) {
                 
         sortiertNach = sortiertNach.trim().toLowerCase();
         
