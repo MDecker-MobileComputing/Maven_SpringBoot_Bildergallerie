@@ -89,7 +89,7 @@ public class BildEntity {
     @ManyToMany 
     @JoinTable( name               = "tag_zu_bild",      
                 joinColumns        = @JoinColumn(name = "bild_id"),
-                inverseJoinColumns = @JoinColumn(name = "tag_id") )
+                inverseJoinColumns = @JoinColumn(name = "tag_id" ) )
     private Set<TagEntity> tags;
 
 
