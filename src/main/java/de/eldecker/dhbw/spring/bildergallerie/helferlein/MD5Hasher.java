@@ -65,7 +65,7 @@ public class MD5Hasher {
             
         } else {
             
-            LOG.warn( "Hash-Wert für {} Bytes konnte nicht berechnet werden weil Hash-Algo nicht gefunden.", 
+            LOG.warn( "Hash-Wert kann nicht berechnet werden weil Hash-Algo nicht gefunden.", 
                       byteArray.length );  
             return "";
         }
@@ -82,9 +82,9 @@ public class MD5Hasher {
     private static String bytesToHex( byte[] bytes ) {
         
         final StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
+        for ( byte b : bytes ) {
             
-            sb.append(String.format("%02x", b));
+            sb.append( String.format("%02x", b) );
         }
         
         return sb.toString();
