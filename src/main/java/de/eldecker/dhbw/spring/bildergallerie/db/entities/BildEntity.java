@@ -344,6 +344,7 @@ public class BildEntity {
     public String getBildTyp() {
     
         final String mimeTyp = getMimeTyp();
+        
         return mimeTyp.replaceFirst( "image/", "" );
     }
 
