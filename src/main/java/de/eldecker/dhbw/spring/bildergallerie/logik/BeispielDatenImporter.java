@@ -170,7 +170,7 @@ public class BeispielDatenImporter implements ApplicationRunner {
      
         final TagEntity tag = new TagEntity( name );
 
-        return _tagRepo.save(tag );        
+        return _tagRepo.save( tag );        
     }
         
 }
