@@ -382,13 +382,10 @@ public class BildEntity {
         
         if ( tags == null ) {
             
-            tags = new HashSet<>( 5 );
-            return tags.add( tag );
+            tags = new HashSet<>( 5 );                      
+        } 
             
-        } else {
-            
-            return tags.add( tag );
-        }
+        return tags.add( tag );
     }
 
 
