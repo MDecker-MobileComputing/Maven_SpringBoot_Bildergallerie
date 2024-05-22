@@ -128,7 +128,7 @@ public class ThymeleafController {
     public String bildListeAnzeigen( Model model,
                                      @RequestParam(defaultValue = "zeit") String sortiertNach ) {
                 
-        sortiertNach = sortiertNach.trim().toLowerCase();
+       sortiertNach = sortiertNach.trim().toLowerCase();
         
        SortierAttributEnum sortierAttribut = ZEIT;
 
