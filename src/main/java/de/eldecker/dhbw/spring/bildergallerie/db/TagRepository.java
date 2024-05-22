@@ -27,8 +27,13 @@ public interface TagRepository extends JpaRepository<TagEntity, Long> {
     /**
      * Derived Query Method (Query wird an Methodennamen erkannt):
      * Liefert Liste aller Tags aus Datenbanktabelle zurück.
+     * Das erste {@code By} im Methodennamen ist als Trenner zwischen
+     * der Operation {@code findAll} und der Sortieranweisung
+     * {@code OrderByNameAsc} erforderlich.
+     * <br><br> 
+     * 
      * Für case-insensitive Sortierung siehe 
-     * {@link #findAllSortiertNachNameCaseInsensitive()}
+     * {@link #findAllSortiertNachNameCaseInsensitive()}.
      * 
      * @return Liste der Tag-Objekte, sortiert (case-sensitive!) nach
      *         Name
