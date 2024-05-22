@@ -23,24 +23,29 @@ import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 @RepositoryRestResource(path = "tags")
 public interface TagRepository extends JpaRepository<TagEntity, Long> {
 
+    
+    /**
+     * Derived Query Method (Query wird an Methodennamen erkannt):
+     * Liefert Liste aller Tags aus Datenbanktabelle zurück.
+     * Für case-insensitive Sortierung siehe 
+     * {@link #findAllSortiertNachNameCaseInsensitive()}
+     * 
+     * @return Liste der Tag-Objekte, sortiert (case-sensitive!) nach
+     *         Name
+     */
+    List<TagEntity> findAllByOrderByNameAsc();
+    
+    
     /**
      * Eigene Sortiermethode mit JPQL, um bei alphabetischer Sortierung nach
      * Name Groß-/Kleinschreibung zu ignorieren.
      * <br><br>
-     * 
-     * Es kann auch wie folgt mit der automatisch erzeugen Methoden sortiert 
-     * werden, aber dann kommen Tags, deren Namen mit einem Kleinbuchstaben  
-     * anfängt, nach Tags mit Namen mit Großbuchstaben:
-     * <pre>
-     * _tagRepo.findAll( Sort.by( "name" ) );
-     * </pre> 
-     * 
      * @return Liste aller {@link TagEntity}-Objekte, alphabetisch aufsteigend 
      *         sortiert
      */
     @Query("SELECT t FROM TagEntity t ORDER BY LOWER(t.name)")
-    List<TagEntity> findAllSortByNameIgnoreCase();
-    
+    List<TagEntity> findAllSortiertNachNameCaseInsensitive();
+            
     
     /**
      * {@link TagEntity}-Objekt mit {@code name} suchen. 
