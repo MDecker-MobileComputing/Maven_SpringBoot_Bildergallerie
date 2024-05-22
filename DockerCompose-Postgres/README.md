@@ -1,0 +1,59 @@
+<br>
+
+Default-mäßig läuft die Anwendung gegen die eingebettete H2-Datenbank.
+Wenn die Anwendung mit dem Spring-Profil `postgres` ausgeführt wird, dann
+wird die Verbindung zu einer lokal laufenden Postgres-Instanz aufgebaut,
+welche in der Datei `application-postgres.properties` definiert ist.
+Für den Start der Anwendung mit diesem Profil gibt es im Wurzelverzeichnis
+die Start-Skripte `maven_start_postgres`.
+
+<br>
+
+Die hierfür benötigte lokale Postgres-Instanz kann mit Docker-Compose gestartet werden.
+Hierzu ist im aktuellen Ordner der folgende Befehl auszuführen:
+
+```
+docker-compose up
+```
+
+<br>
+
+----
+
+## pgAdmin ##
+
+Die Datei [docker-compose.yml](docker-compose.yml) in diesem Ordner startet auch
+noch einen Container mit der Web-Admin-Oberfläche pgAdmin.
+Diese ist nach erfolgreichem Start unter der folgenden URL erreichbar: http://localhost:5050/
+Die Anmeldedaten stehen in der Datei `docker-compose.yml`, siehe Einträge `PGADMIN_DEFAULT_EMAIL`
+und `PGADMIN_DEFAULT_PASSWORD`.
+
+<br>
+
+Die Screenshots unten zeigen, wie man dann die Verbindung zu Postgres-Instanz im anderen Container Konfiguriert.  Das hierfür benötige Passwort ist ebenfalls in der Datei
+`docker-compose.yml` definiert, siehe den Eintrag `POSTGRES_PASSWORD`.
+
+<br>
+
+![Screenshot 1](screenshot_1.png)
+
+<br>
+
+![Screenshot 2](screenshot_2.png)
+
+<br>
+
+![Screenshot 3](screenshot_3.png)
+
+<br>
+
+![Screenshot 4](screenshot_4.png)
+
+<br>
+
+Da erfolgreichem Start der Anwendung "Bildergallerie" mit dem Profil `postgres`
+sollen sich die drei Tabellen dieser Anwendung an der folgenden Stelle finden:
+
+![Screenshot 5](screenshot_5.png)
+
+<br>
