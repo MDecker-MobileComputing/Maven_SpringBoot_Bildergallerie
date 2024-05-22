@@ -30,6 +30,22 @@ public class BildSchonVorhandenException extends Exception {
     
     
     /**
+     * Konstruktor mit eigener Exception-Nachricht {@code message}.
+     * 
+     * @param message Exception-Nachricht
+     * 
+     * @param bildEntity Bereits in DB vorhandenes Bild mit demselben
+     *                   Hash-Wert
+     */
+    public BildSchonVorhandenException( String message, BildEntity bildEntity ) {
+       
+        super( message );
+        
+        _bildEntity = bildEntity;
+    }    
+    
+    
+    /**
      * Getter für das bereits vorhandene Bild. 
      * 
      * @return Bild mit selbem Hash-Wert, das schon in DB gespeichert
@@ -39,4 +55,5 @@ public class BildSchonVorhandenException extends Exception {
         
         return _bildEntity;
     }
+    
 }
