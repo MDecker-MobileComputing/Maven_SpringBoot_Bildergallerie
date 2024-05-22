@@ -163,7 +163,7 @@ public class ThymeleafController {
     @GetMapping( "/tags" )
     public String tagsAnzeigen( Model model ) {
            
-        final List<TagEntity> tagListe = _tagRepo.findAllSortByNameIgnoreCase();
+        final List<TagEntity> tagListe = _tagRepo.findAllSortiertNachNameCaseInsensitive();
                 
         model.addAttribute( "tag_liste", tagListe );
         
@@ -215,7 +215,7 @@ public class ThymeleafController {
     @GetMapping( "/hochladen" )
     public String bildHochladen( Model model ) {
     	
-        final List<TagEntity> tagListe = _tagRepo.findAllSortByNameIgnoreCase();
+        final List<TagEntity> tagListe = _tagRepo.findAllSortiertNachNameCaseInsensitive();
         
         model.addAttribute( "tag_namen", tagListe );
     	
