@@ -36,7 +36,7 @@ public interface TagRepository extends JpaRepository<TagEntity, Long> {
      * {@link #findAllSortiertNachNameCaseInsensitive()}.
      * 
      * @return Liste der Tag-Objekte, sortiert (case-sensitive!) nach
-     *         Name; "nachbearbeitet" kommt z.B. nach "Tier"!
+     *         Name; "nachbearbeitet" kommt z.B. nach "Hund"!
      */
     List<TagEntity> findAllByOrderByNameAsc();
     
