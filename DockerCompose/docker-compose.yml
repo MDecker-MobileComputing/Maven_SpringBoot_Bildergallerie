@@ -1,0 +1,30 @@
+# Vorlage:
+# https://medium.com/towards-data-engineering/running-a-postgresql-and-pgadmin4-instance-using-docker-compose-c6dd6e6e03bb
+#
+# Verbindung von pgadmin zu postgres muss manuell eingerichtet werden, siehe
+# "5. Connecting to the Database server."
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+
+    # volumes:
+    #   - "postgres-data:/var/lib/postgresql/data"
+
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: beispiel@test.de
+      PGADMIN_DEFAULT_PASSWORD: pg4dmin
+    ports:
+      - "5050:80"
