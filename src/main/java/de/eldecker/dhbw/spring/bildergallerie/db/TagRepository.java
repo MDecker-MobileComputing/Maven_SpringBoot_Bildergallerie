@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 
@@ -12,7 +13,14 @@ import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 /**
  * Zur Laufzeit wird von <i>Spring Data JPA</i> automatisch eine Implementierung
  * dieses Interface erzeugt. 
+ * <br><br>
+ * 
+ * Die Klasse ist mit {@code RepositoryRestResource} annotiert, deshalb stehen
+ * die Tags unter dem Pfad {@code http://localhost:8080/tags } zur Verfügung.
+ * Hierfür muss in der Datei {@code pom.xml} die Abhängigkeit
+ * {@code spring-boot-starter-data-rest} hinzugefügt werden.
  */
+@RepositoryRestResource(path = "tags")
 public interface TagRepository extends JpaRepository<TagEntity, Long> {
 
     /**
