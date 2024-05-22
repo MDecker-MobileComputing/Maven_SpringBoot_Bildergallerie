@@ -24,6 +24,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * Datenbank-Entität für ein Bild.
@@ -64,6 +66,7 @@ public class BildEntity {
 
     /** Bild als "Binary Large Object" (BLOB). */
     @Lob
+    @JsonIgnore
     private Blob bild;
     
     /** 
@@ -245,6 +248,7 @@ public class BildEntity {
      * @return Byte-Array mit Binärdaten von Bild, oder leerer Array
      *         wenn Fehler aufgetreten (aber nicht {@code null}).
      */
+    @JsonIgnore
     public byte[] getBildBytes() {
     	
     	final int anzahlBytes = getBildGroesseBytes();
