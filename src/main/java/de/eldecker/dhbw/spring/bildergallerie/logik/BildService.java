@@ -98,9 +98,11 @@ public class BildService {
                             
             final BildEntity bild = new BildEntity( titel , blob, md5hash, mimeTyp );
             
-            final BildEntity ergebnisEntity = _bildRepo.save( bild ); // eigentliches Speichern in DB
+            final BildEntity savedEntity = _bildRepo.save( bild ); // eigentliches Speichern in DB
             
-            return tagsHinzufuegen( ergebnisEntity, tagListe );                     
+            final BildEntity ergebnisEntity = tagsHinzufuegen( savedEntity, tagListe );
+            
+            return ergebnisEntity;
         }                
     }
     
