@@ -32,10 +32,11 @@ public interface TagRepository extends JpaRepository<TagEntity, Long> {
      * werden, aber dann kommen Tags, deren Namen mit einem Kleinbuchstaben  
      * anfängt, nach Tags mit Namen mit Großbuchstaben:
      * <pre>
-     * Sort sort = Sort.by( "name" );
-     * List<TagEntity> liste = _tagRepo.findAll( sort );               
+     * _tagRepo.findAll( Sort.by( "name" ) );
+     * </pre> 
      * 
-     * @return Liste aller {@link TagEntity}-Objekte, alphabetisch aufsteigend sortiert
+     * @return Liste aller {@link TagEntity}-Objekte, alphabetisch aufsteigend 
+     *         sortiert
      */
     @Query("SELECT t FROM TagEntity t ORDER BY LOWER(t.name)")
     List<TagEntity> findAllSortByNameIgnoreCase();
