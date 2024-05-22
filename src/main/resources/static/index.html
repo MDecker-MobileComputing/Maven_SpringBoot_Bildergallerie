@@ -29,9 +29,9 @@
 
   <h2>Bilderliste</h2>
   <ul>
-    <li><a href="app/liste"                   >Alle Bilder sortiert nach Datum/Zeit (Default)</a></li>
-    <li><a href="app/liste?sortiertNach=typ"  >Alle Bilder sortiert nach Typ</a></li>
-    <li><a href="app/liste?sortiertNach=titel">Alle Bilder sortiert nach Titel</a></li>
+    <li><a href="app/liste"                    >Alle Bilder sortiert nach Datum/Zeit (Default)</a></li>
+    <li><a href="app/liste?sortiertNach=typ"   >Alle Bilder sortiert nach Typ</a></li>
+    <li><a href="app/liste?sortiertNach=titel" >Alle Bilder sortiert nach Titel</a></li>
   </ul>
   <br>
 
@@ -57,18 +57,23 @@
           <li><a href="actuator/metrics/application.started.time" target="_blank" >Wie lange brauchte die Anwendung zum Starten?</a></li>
           <li><a href="actuator/metrics/system.cpu.count"         target="_blank" >Anzahl der CPU-Kerne</a></li>
           <li><a href="actuator/metrics/jdbc.connections.max"     target="_blank" >Max. Anzahl Datenbankverbindungen</a></li>
-          <li><a href="actuator/metrics/jvm.memory.used"          tagert="_blank" >Von JVM belegtes RAM</a></li>
+          <li><a href="actuator/metrics/jvm.memory.used"          target="_blank" >Von JVM belegtes RAM</a></li>
           <li><a href="actuator/metrics/process.uptime"           target="_blank" >Wie länge läuft die JVM schon? (in Sekunden)</a></li>
           <li><a href="actuator/metrics/jvm.info"                 target="_blank" >Infos zur JVM (Java-Version, Hersteller)</a></li>
         </ul>
     </li>
-
-
   </ul>
   <br>
   <p>
     Die Endpunkte bis auf <tt>actuator/health</tt> müssen in der Datei <tt>application.properties</tt>
     aktiviert werden (siehe Key <tt>management.endpoints.web.exposure.include</tt>).
   </p>
+  <br>
+
+  <h2>Endpunkte mit <tt>@RepositoryRestResource</tt></h2>
+  <ul>
+    <li><a href="bilder" target="_blank">Entity-Set "Bilder"</a></li>
+    <li><a href="tags"   target="_blank">Entity-Set "Tags"</a></li>
+  </ul>
 
 </body>

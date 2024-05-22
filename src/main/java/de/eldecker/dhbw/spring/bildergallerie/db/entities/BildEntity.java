@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.eldecker.dhbw.spring.bildergallerie.db.BildRepository;
+
 
 /**
  * Datenbank-Entität für ein Bild.
@@ -64,7 +66,13 @@ public class BildEntity {
     /** Zeitpunkt (Datum + Uhrzeit) des Uploads des Bilds. */
     private LocalDateTime zeitpunktErzeugung;
 
-    /** Bild als "Binary Large Object" (BLOB). */
+    /** 
+     * Bild als "Binary Large Object" (BLOB).
+     * <br><br>
+     * 
+     * Dieses Attribut ist wegen der Annotation {@code RepositoryRestResource}
+     * in der Klasse {@link BildRepository} mit {@code JsonIgnore} annotiert.
+     */
     @Lob
     @JsonIgnore
     private Blob bild;
@@ -244,6 +252,10 @@ public class BildEntity {
     
     /**
      * Hilfsmethode: Bild als Byte-Array zurückgeben.
+     * <br><br>
+     * 
+     * Diese Methode ist wegen der Annotation {@code RepositoryRestResource}
+     * in der Klasse {@link BildRepository} mit {@code JsonIgnore} annotiert.
      * 
      * @return Byte-Array mit Binärdaten von Bild, oder leerer Array
      *         wenn Fehler aufgetreten (aber nicht {@code null}).
