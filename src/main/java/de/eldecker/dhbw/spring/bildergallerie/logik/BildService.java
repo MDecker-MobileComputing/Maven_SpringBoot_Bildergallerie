@@ -118,7 +118,7 @@ public class BildService {
      * 
      * @return Bild nach hinzufügen von Tags
      */
-    public BildEntity tagsHinzufuegen ( BildEntity bildEntity, List<String> tagListe ) {
+    public BildEntity tagsHinzufuegen( BildEntity bildEntity, List<String> tagListe ) {
     	
     	if ( tagListe == null || tagListe.isEmpty() ) {
     		
@@ -132,9 +132,8 @@ public class BildService {
     		final Optional<TagEntity> tagEntityOptional = _tagRepo.findByName( tagName );
     		if ( tagEntityOptional.isEmpty() ) {
     			
-    			LOG.warn( "Versuch Tag \"{}\" Bild mit ID={} zuzuordnen, aber kein Tag mit diesem Namen gefunden.", 
-    					  tagName, bildEntity.getId() );
-    			
+    			LOG.warn( "Versuch Tag \"{}\" dem Bild mit ID={} zuzuordnen, aber kein Tag mit diesem Namen gefunden.", 
+    					  tagName, bildEntity.getId() );    			
     		} else {
     			
     			final TagEntity tag = tagEntityOptional.get();
