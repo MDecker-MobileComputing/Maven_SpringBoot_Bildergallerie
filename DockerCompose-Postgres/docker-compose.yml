@@ -2,7 +2,7 @@
 # https://medium.com/towards-data-engineering/running-a-postgresql-and-pgadmin4-instance-using-docker-compose-c6dd6e6e03bb
 #
 # Verbindung von pgadmin zu postgres muss manuell eingerichtet werden, siehe
-# "5. Connecting to the Database server."
+# "5. Connecting to the Database server" im obigen Link
 
 version: '3.8'
 
@@ -14,6 +14,8 @@ services:
       POSTGRES_PASSWORD: g3h3im
       POSTGRES_DB: meine_postgres_db
 
+    # ACHTUNG: ohne Definition eines Volumes gehen die Daten verloren
+    #          wenn der Container gelöscht wird
     # volumes:
     #   - "postgres-data:/var/lib/postgresql/data"
 
