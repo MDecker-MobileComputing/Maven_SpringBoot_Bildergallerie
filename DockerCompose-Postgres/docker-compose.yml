@@ -10,9 +10,9 @@ services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: datenbank-nutzer
+      POSTGRES_PASSWORD: g3h3im
+      POSTGRES_DB: meine_postgres_db
 
     # volumes:
     #   - "postgres-data:/var/lib/postgresql/data"
@@ -24,7 +24,7 @@ services:
     image: dpage/pgadmin4
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: beispiel@test.de
-      PGADMIN_DEFAULT_PASSWORD: pg4dmin
+      PGADMIN_DEFAULT_EMAIL: pg-admin-nutzer@test.de
+      PGADMIN_DEFAULT_PASSWORD: pg-admin-geheim
     ports:
       - "5050:80"
