@@ -44,7 +44,7 @@ Siehe auch den [Artikel "Setting up PostgreSQL and Pgadmin4 instance infrastruct
 
 <br>
 
-Die Screenshots unten zeigen, wie man dann die Verbindung zu Postgres-Instanz im anderen Container Konfiguriert.
+Die Screenshots unten zeigen, wie man dann die Verbindung zu Postgres-Instanz im anderen Container konfiguriert.
 Das hierfür benötige Passwort ist ebenfalls in der Datei `docker-compose.yml` definiert, siehe den Eintrag `POSTGRES_PASSWORD`.
 
 <br>
