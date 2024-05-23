@@ -31,10 +31,14 @@ docker-compose up
 ## pgAdmin ##
 
 Die Datei [docker-compose.yml](docker-compose.yml) in diesem Ordner startet auch
-noch einen Container mit der Web-Admin-Oberfläche pgAdmin.
+noch einen Container mit der Web-Admin-Oberfläche [pgAdmin](https://www.pgadmin.org/).
 Diese ist nach erfolgreichem Start unter der folgenden URL erreichbar: http://localhost:5050/
 Die Anmeldedaten stehen in der Datei `docker-compose.yml`, siehe Einträge `PGADMIN_DEFAULT_EMAIL`
 und `PGADMIN_DEFAULT_PASSWORD`.
+
+<br>
+
+Siehe auch den [Artikel "Setting up PostgreSQL and Pgadmin4 instance infrastructure using Docker Compose" auf *medium.com*](https://medium.com/towards-data-engineering/running-a-postgresql-and-pgadmin4-instance-using-docker-compose-c6dd6e6e03bb).
 
 <br>
 
