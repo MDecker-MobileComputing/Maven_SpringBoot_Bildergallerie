@@ -1,3 +1,5 @@
+# Anwendung gegen Postgres-Datenbank in Docker-Container laufen lassen #
+
 <br>
 
 Default-mäßig läuft die Anwendung gegen die eingebettete H2-Datenbank.
@@ -67,5 +69,13 @@ Da erfolgreichem Start der Anwendung "Bildergallerie" mit dem Profil `postgres`
 sollen sich die drei Tabellen dieser Anwendung an der folgenden Stelle finden:
 
 ![Screenshot 5](screenshot_5.png)
+
+<br>
+
+![Screenshot 6](screenshot_6.png)
+
+<br>
+
+![Screenshot 7](screenshot_7.png)
 
 <br>
