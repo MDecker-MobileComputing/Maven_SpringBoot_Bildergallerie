@@ -23,7 +23,7 @@ jobs:
     - name: FatJar-Datei veröffentlichen
       uses: actions/upload-artifact@v4
       with:
-        name: Tagenbuch_FatJar
+        name: Tagenbuch_Bildergallerie
         path: target/bildergallerie-*-SNAPSHOT.jar
         if-no-files-found: error
         retention-days: 3
