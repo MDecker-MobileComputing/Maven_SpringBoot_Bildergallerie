@@ -5,7 +5,8 @@ Wenn die Anwendung mit dem Spring-Profil `postgres` ausgeführt wird, dann
 wird die Verbindung zu einer lokal laufenden Postgres-Instanz aufgebaut,
 welche in der Datei `application-postgres.properties` definiert ist.
 Für den Start der Anwendung mit diesem Profil gibt es im Wurzelverzeichnis
-die Start-Skripte `maven_start_postgres`.
+die Start-Skripte `maven_start_postgres.bat` (Windows) und
+`maven_start_postgress.sh`(MacOS+Linux).
 
 <br>
 
@@ -15,6 +16,13 @@ Hierzu ist im aktuellen Ordner der folgende Befehl auszuführen:
 ```
 docker-compose up
 ```
+
+<br>
+
+**Weitere Befehle:**
+* Container anhalten   : `docker-compose stop`
+* Container neu starten: `docker-compose start`
+* container löschen    : `docker-compose down`
 
 <br>
 
@@ -30,8 +38,8 @@ und `PGADMIN_DEFAULT_PASSWORD`.
 
 <br>
 
-Die Screenshots unten zeigen, wie man dann die Verbindung zu Postgres-Instanz im anderen Container Konfiguriert.  Das hierfür benötige Passwort ist ebenfalls in der Datei
-`docker-compose.yml` definiert, siehe den Eintrag `POSTGRES_PASSWORD`.
+Die Screenshots unten zeigen, wie man dann die Verbindung zu Postgres-Instanz im anderen Container Konfiguriert.
+Das hierfür benötige Passwort ist ebenfalls in der Datei `docker-compose.yml` definiert, siehe den Eintrag `POSTGRES_PASSWORD`.
 
 <br>
 

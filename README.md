@@ -3,8 +3,7 @@
 <br>
 
 Dieses Repository enthält eine Spring-Boot-Anwendung, die eine einfache Bildergallerie als Web-Anwendungen implementiert.
-Die Anwendung soll die Verwendung der [Jakarta Persistence API (JPA)](https://de.wikipedia.org/wiki/Jakarta_Persistence_API) 
-für Binärdateien demonstrieren.
+Die Anwendung soll die Verwendung der *Spring Data JPA* mit M:N-Relationen und Binärdateien demonstrieren.
 
 <br>
 
