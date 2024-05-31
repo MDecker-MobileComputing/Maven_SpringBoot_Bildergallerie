@@ -447,25 +447,20 @@ public class BildEntity {
     @Override
     public boolean equals( Object obj ) {
 
-        if ( this == obj ) {
+        if ( this == obj ) { return true;  };
+        
+        if ( obj == null ) { return false; }
 
-            return true;
-        }
-        if ( obj == null ) {
+        if ( obj instanceof BildEntity anderes ) {
 
+            return Objects.equals( titel             , anderes.titel              ) &&
+                   Objects.equals( zeitpunktErzeugung, anderes.zeitpunktErzeugung ) &&
+                   Objects.equals( hash              , anderes.hash               ) &&
+                   Objects.equals( mimeTyp           , anderes.mimeTyp            );                        
+        } else {
+            
             return false;
-        }
-        if ( getClass() != obj.getClass() ) {
-
-            return false;
-        }
-
-        final BildEntity other = (BildEntity) obj;
-
-        return Objects.equals( titel             , other.titel              ) &&
-               Objects.equals( zeitpunktErzeugung, other.zeitpunktErzeugung ) &&
-               Objects.equals( hash              , other.hash               ) &&
-               Objects.equals( mimeTyp           , other.mimeTyp            );
+        }        
     }
 
 

@@ -141,22 +141,18 @@ public class TagEntity {
    @Override
    public boolean equals( Object obj ) {
 
-       if ( this == obj ) {
+       if ( this == obj ) { return true;  };
+       
+       if ( obj == null ) { return false; }
 
-           return true;
-       }
-       if ( obj == null ) {
+       if ( obj instanceof TagEntity anderes ) {
 
+           return Objects.equals( name, anderes.name     ) &&
+                  Objects.equals( bilder, anderes.bilder );
+       } else {
+           
            return false;
        }
-       if ( getClass() != obj.getClass() ) {
-
-           return false;
-       }
-
-       final TagEntity other = (TagEntity) obj;
-
-       return Objects.equals( name, other.name );
    }
 
 }
