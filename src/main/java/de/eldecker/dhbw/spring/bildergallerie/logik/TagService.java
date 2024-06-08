@@ -11,35 +11,35 @@ import de.eldecker.dhbw.spring.bildergallerie.db.entities.TagEntity;
 
 
 /**
- * Diese Klasse enthält die Methoden mit der Geschäftslogik für 
- * die Arbeit mit Tags (Schildchen).
+ * Diese Klasse enthält die Methoden mit der Geschäftslogik für
+ * die Arbeit mit Tags (Schildchen, Etikett, Label).
  */
 @Service
 public class TagService {
 
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit den Tags. */
     private final TagRepository _tagRepo;
-    
-    
+
+
     /**
      * Konstruktor für Dependency Injection.
      */
     @Autowired
     public TagService( TagRepository tagRepo ) {
-        
+
         _tagRepo = tagRepo;
     }
-    
-    
+
+
     /**
      * Liefert Liste aller Tags zurück.
-     * 
+     *
      * @return Liste der Tags, aufsteigend nach Name sortiert
      */
     public List<TagEntity> getListeTags() {
-        
+
         final Sort sort = Sort.by( "name" );
-        
+
         return _tagRepo.findAll( sort );
     }
 }
