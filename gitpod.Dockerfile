@@ -10,3 +10,6 @@ RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && \
     sdk install java 21.0.2-amzn  && \
     sdk default java 21.0.2-amzn "
 
+# Programm "kafkacat" (gibt es nur unter Linux) installieren
+# (die Beispielanwendung im Repo hat aber nichts mit Kafka zu tun)
+RUN sudo apt-get install -y kafkacat 
