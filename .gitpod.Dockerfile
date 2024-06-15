@@ -16,5 +16,8 @@ RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && \
 # (die Beispielanwendung im Repo hat aber nichts mit Kafka zu tun)
 RUN sudo apt-get install -y kafkacat 
 			
-# Wir können auch globale NPM-Pakete installieren            
+# Wir können auch globale NPM-Pakete installieren, z.B. "http-server".
+# Dieses Programm kann dazu genutzt werden, um die mit dem Skript
+# maven_javadoc.sh generierten HTML-Dateien im Ordner
+# target/site/apidocs/ bereitzustellen.
 RUN npm install -g http-server
