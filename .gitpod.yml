@@ -1,0 +1,13 @@
+image:
+    file: .gitpod.Dockerfile
+
+ports:
+  - name: Bildergallerie
+    port: 8080
+    onOpen: open-browser 
+    visibility: public
+  - name: pgAdmin
+    port: 5050
+    onOpen: open-browser 
+    visibility: public
+    
