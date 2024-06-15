@@ -1,3 +1,5 @@
+# Diese Datei wird nur für einen neuen Gitpod-Workspace wirksam
+
 # Base-Image
 FROM gitpod/workspace-full
 
