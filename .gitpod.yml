@@ -3,7 +3,7 @@ image:
 
 tasks:
   - name: Verwendungszähler
-    command: echo -n $(date '+%d.%m.%Y') >> GitPodVerwendungsZaehler.log
+    command: echo $(date '+%d.%m.%Y') >> GitPodVerwendungsZaehler.log
 
 # Damit die beiden HTTP-Ports nicht nach jedem Neustart des Workspaces neu
 # freigegeben werden müssen.
