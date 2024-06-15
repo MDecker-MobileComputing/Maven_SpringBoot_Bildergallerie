@@ -1,6 +1,12 @@
 image:
     file: .gitpod.Dockerfile
 
+tasks:
+  - name: Verwendungszähler
+    command: echo -n $(date '+%d.%m.%Y') >> GitPodVerwendungsZaehler.log
+
+# Damit die beiden HTTP-Ports nicht nach jedem Neustart des Workspaces neu
+# freigegeben werden müssen.
 ports:
   - name: Bildergallerie
     port: 8080
