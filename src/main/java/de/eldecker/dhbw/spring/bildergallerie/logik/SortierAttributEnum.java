@@ -7,9 +7,9 @@ package de.eldecker.dhbw.spring.bildergallerie.logik;
  */
 public enum SortierAttributEnum {
 
-    ZEIT("zeitpunktErzeugung"),
-    MIME_TYP("mimeTyp"),
-    TITEL("titel");
+    ZEIT( "zeitpunktErzeugung" ),
+    MIME_TYP( "mimeTyp" ),
+    TITEL( "titel" );
     
     /** Technischer Name Attribut von {@code BildEntity}. */
     private final String entityAttributName; 

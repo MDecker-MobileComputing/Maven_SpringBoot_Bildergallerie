@@ -188,7 +188,8 @@ public class BildService {
                 case "image/gif"     :
                 case "image/svg+xml" : return mimeType;
                     
-                default: throw new MimeTypeException( "Nicht unterstützter MIME-Type \"" + mimeType + "\"." );
+                default: 
+                    throw new MimeTypeException( "Nicht unterstützter MIME-Type \"" + mimeType + "\"." );
             }                        
         }
         catch ( IOException ex ) {
