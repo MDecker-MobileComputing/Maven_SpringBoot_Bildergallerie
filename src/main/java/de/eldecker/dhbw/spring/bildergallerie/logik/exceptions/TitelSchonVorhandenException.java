@@ -8,9 +8,9 @@ import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
  * Datenbank vorhanden.
  */
 @SuppressWarnings("serial")
-public class BildTitelSchonVergebenException extends BildSchonVorhandenException {
+public class TitelSchonVorhandenException extends BildSchonVorhandenException {
 
-    public BildTitelSchonVergebenException( BildEntity bild ) {
+    public TitelSchonVorhandenException( BildEntity bild ) {
         
         super( "Bild mit Name/Titel schon vorhanden", bild );
     }

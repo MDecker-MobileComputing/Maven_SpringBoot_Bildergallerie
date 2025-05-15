@@ -18,8 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
-import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildTitelSchonVergebenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
+import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.TitelSchonVorhandenException;
 
 
 /**
@@ -173,8 +173,9 @@ public class DateiUploadController {
      *
      * @return Weiterleitungs-Seite für diesen Fehlerfall
      */
+    
     @SuppressWarnings("unused")
-	private String behandleFehlerTitelSchonVorhanden( BildTitelSchonVergebenException ex, 
+	private String behandleFehlerTitelSchonVorhanden( TitelSchonVorhandenException ex, 
     		                                          RedirectAttributes attributeWeiterleitung ) {
 
     	final BildEntity altesBild = ex.getBildEntity();
