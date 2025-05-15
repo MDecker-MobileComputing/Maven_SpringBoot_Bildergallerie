@@ -4,7 +4,7 @@ import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 
 
 /**
- * Für Rechnerübung: Ein Bild mit diesem Namen ist schon in der
+ * Für Rechnerübung: Ein Bild mit diesem Titel ist schon in der
  * Datenbank vorhanden.
  */
 @SuppressWarnings("serial")
