@@ -19,6 +19,7 @@ import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 import de.eldecker.dhbw.spring.bildergallerie.logik.BildService;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.BildSchonVorhandenException;
 import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.MimeTypeException;
+import de.eldecker.dhbw.spring.bildergallerie.logik.exceptions.TitelSchonVorhandenException;
 
 
 /**
@@ -146,7 +147,7 @@ public class DateiUploadController {
 
         final BildEntity altesBild = ex.getBildEntity();
 
-        LOG.warn( "Versuch ein Bild hochzuladen, aber es gibt dieses Bild schon in der DB unter der ID={}.",
+        LOG.warn( "Versuch ein Bild hochzuladen, aber es gibt schon ein Bild mit demselben Haswert unter der ID={}.",
                   altesBild.getId() );
 
         final String        altesBildTitel     = altesBild.getTitel();
@@ -159,6 +160,39 @@ public class DateiUploadController {
         attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", kBytes );
 
         return "redirect:upload-fehler-bild-schon-vorhanden";
+    }
+
+    
+    /**
+     * Behandlung für den Fall, dass der Titel des gerade hochgeladenen Bilds schon vorhanden ist.
+     * 
+     * @param ex Exception-Objekt, enthält das alte Bild
+     * 
+     * @param attributeWeiterleitung Platzhalterwerte für das Template der
+     *                               Weiterleitungs-Seite
+     *
+     * @return Weiterleitungs-Seite für diesen Fehlerfall
+     */
+    
+    @SuppressWarnings("unused")
+	private String behandleFehlerTitelSchonVorhanden( TitelSchonVorhandenException ex, 
+    		                                          RedirectAttributes attributeWeiterleitung ) {
+
+    	final BildEntity altesBild = ex.getBildEntity();
+
+        LOG.warn( "Versuch ein Bild hochzuladen, aber es gibt schon ein Bild mit dem Titel \"{}\" unter der ID={}.",
+                  altesBild.getTitel(), altesBild.getId() );
+
+        final String        altesBildTitel     = altesBild.getTitel();
+        final LocalDateTime altesBildDatumZeit = altesBild.getZeitpunktErzeugung();
+
+        attributeWeiterleitung.addFlashAttribute( "altes_bild_titel"    , altesBildTitel     );
+        attributeWeiterleitung.addFlashAttribute( "altes_bild_datumzeit", altesBildDatumZeit );
+
+        final long kBytes = altesBild.getBildGroesseKBytes();
+        attributeWeiterleitung.addFlashAttribute( "altes_bild_kBytes", kBytes );
+
+        return "redirect:upload-fehler-titel-schon-vorhanden";            	
     }
 
 
@@ -187,7 +221,7 @@ public class DateiUploadController {
 
 
     /**
-     * Weiterleitungs-Seite wenn Bild schon in DB vorhanden war.
+     * Weiterleitungs-Seite wenn Bild mit selbem Hash-Wert schon in DB vorhanden.
      *
      * @return Name von Template-Datei
      */
@@ -196,6 +230,18 @@ public class DateiUploadController {
 
         return "upload-fehler-bild-schon-vorhanden";
     }
+    
+    
+    /**
+     * Weiterleitungs-Seite wenn Bild mit selben Titel schon in DB vorhanden. 
+     *
+     * @return Name von Template-Datei
+     */
+    @GetMapping("/upload-fehler-titel-schon-vorhanden")
+    public String titelSchonVorhanden() {
+
+        return "upload-fehler-titel-schon-vorhanden";
+    }    
 
 
     /**
