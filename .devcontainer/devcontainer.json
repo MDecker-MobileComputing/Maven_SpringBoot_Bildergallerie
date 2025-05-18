@@ -2,8 +2,15 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/java
 {
 	"name": "Java",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/java:1-21-bookworm",
+
+	// Pfad muss relativ zum devcontainer.json sein
+	"dockerComposeFile": "./docker-compose.yml",
+
+	// Service-Name im docker-compose.yml, in dem die IDE läuft
+	"service": "devcontainer",
+
+	// Weitere Services aus dem docker-compose.yml, die im Container verfügbar sein sollen
+	"runServices": [ "postgres", "pgadmin"],
 
 	"features": {
 		"ghcr.io/devcontainers/features/java:1": {
