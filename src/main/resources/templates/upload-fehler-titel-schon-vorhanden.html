@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Fehler beim Upload des Bildes: Titel schon vorhanden</title>
+<meta charset="utf-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="../../styles.css">
+</head>
+<body>
+
+    <h1>Fehler beim Upload des Bildes: Titel schon vorhanden</h1>
+
+    <p>
+        Ein Bild mit diesem Titel ist bereits:
+        "<span th:text="${altes_bild_titel}"></span>".
+    </p>
+    <p>
+        Es wurde hochgeladen am 
+        <span th:text="${#temporals.format(altes_bild_datumzeit, 'dd. MMM yyyy (EEE)')}"></span>
+        um
+        <span th:text="${#temporals.format(altes_bild_datumzeit, 'hh:MM')}"></span>
+        Uhr und hat eine Größe von
+        <span th:text="${altes_bild_kBytes}"></span> kBytes.
+    </p>
+
+    <br>
+
+    <a href="/hochladen.html">Erneuter Versuch</a>
+
+</body>

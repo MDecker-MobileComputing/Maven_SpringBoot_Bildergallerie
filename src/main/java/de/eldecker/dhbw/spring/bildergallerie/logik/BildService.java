@@ -83,27 +83,25 @@ public class BildService {
         
         final String md5hash = _md5hasher.getHash( byteArray );
         
-        final Optional<BildEntity> altesBildOptional = _bildRepo.findByHash( md5hash );
-        
-        if ( altesBildOptional.isPresent() ) {
+        final Optional<BildEntity> bildByHash = _bildRepo.findByHash( md5hash );        
+        if ( bildByHash.isPresent() ) {
             
-            final BildEntity altesBild = altesBildOptional.get(); 
+            final BildEntity altesBild = bildByHash.get(); 
             throw new BildSchonVorhandenException( altesBild );
+        }
             
-        } else {
 
-            final String mimeTyp = mimeTypeBestimmen( byteArray, titel ); // throws MimeTypeException        
-            
-            final Blob blob = BlobProxy.generateProxy( byteArray );
-                            
-            final BildEntity bild = new BildEntity( titel , blob, md5hash, mimeTyp );
-            
-            final BildEntity savedEntity = _bildRepo.save( bild ); // eigentliches Speichern in DB
-            
-            final BildEntity ergebnisEntity = tagsHinzufuegen( savedEntity, tagListe );
-            
-            return ergebnisEntity;
-        }                
+        final String mimeTyp = mimeTypeBestimmen( byteArray, titel ); // throws MimeTypeException        
+        
+        final Blob blob = BlobProxy.generateProxy( byteArray );
+                        
+        final BildEntity bild = new BildEntity( titel , blob, md5hash, mimeTyp );
+        
+        final BildEntity savedEntity = _bildRepo.save( bild ); // eigentliches Speichern in DB
+        
+        final BildEntity ergebnisEntity = tagsHinzufuegen( savedEntity, tagListe );
+        
+        return ergebnisEntity;                
     }
     
     
