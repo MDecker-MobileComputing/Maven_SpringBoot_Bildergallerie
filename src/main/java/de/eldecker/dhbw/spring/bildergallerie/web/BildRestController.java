@@ -22,58 +22,58 @@ import de.eldecker.dhbw.spring.bildergallerie.db.entities.BildEntity;
 @RestController
 @RequestMapping( "/app/" )
 public class BildRestController {
-	
-	private static final Logger LOG = LoggerFactory.getLogger( BildRestController.class );
+
+    private static final Logger LOG = LoggerFactory.getLogger( BildRestController.class );
 
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
 
-    
+
     /**
      * Konstruktor für Dependency Injection.
      */
     @Autowired
     public BildRestController( BildRepository bildRepo ) {
-    	
-    	_bildRepo = bildRepo;
+
+        _bildRepo = bildRepo;
     }
-    
-    
+
+
     /**
      * Einzelnes Bild als Binärdatei bereitstellen.
-     * 
+     *
      * @param id Primärschlüssel von Bild, das zurückgeliefert werden soll.
-     * 
+     *
      * @return HTTP-Status-Code 200 und Bild als Binärdatei; HTTP-Status-Code 404 wenn
      *         Bild nicht gefunden, HTTP-Status-Code 500 wenn DB-Fehler beim Zugriff
      *         auf Bild.
      */
     @GetMapping(value = "/bild/{id}")
     public ResponseEntity<byte[]> getBild( @PathVariable Long id ) {
-    	
-    	final Optional<BildEntity> bildOptional = _bildRepo.findById( id );
-    	if ( bildOptional.isEmpty() ) {
-    		
-    		LOG.error( "Bild mit ID={} als Binärdatei angefordert, wurde aber nicht gefunden.", id );
-    		return ResponseEntity.notFound().build();
-    	}
-    	
-    	final BildEntity bildEntity = bildOptional.get();
-    	
-    	final int anzahlBytes = bildEntity.getBildGroesseBytes();
-    	if ( anzahlBytes <= 0 ) {
-        		
-        	LOG.error( "Bild mit ID={} als Binärdatei angefordert, aber AnzBytes={}.", id, anzahlBytes );
-        	return ResponseEntity.internalServerError().build();
-    	}
-    
-    	final byte[] blobAsBytes = bildEntity.getBildBytes();
 
-    	final MediaType mediaType = MediaType.valueOf( bildEntity.getMimeTyp() );
-    	
+        final Optional<BildEntity> bildOptional = _bildRepo.findById( id );
+        if ( bildOptional.isEmpty() ) {
+
+            LOG.error( "Bild mit ID={} als Binärdatei angefordert, wurde aber nicht gefunden.", id );
+            return ResponseEntity.notFound().build();
+        }
+
+        final BildEntity bildEntity = bildOptional.get();
+
+        final int anzahlBytes = bildEntity.getBildGroesseBytes();
+        if ( anzahlBytes <= 0 ) {
+
+            LOG.error( "Bild mit ID={} als Binärdatei angefordert, aber AnzBytes={}.", id, anzahlBytes );
+            return ResponseEntity.internalServerError().build();
+        }
+
+        final byte[] blobAsBytes = bildEntity.getBildBytes();
+
+        final MediaType mediaType = MediaType.valueOf( bildEntity.getMimeTyp() );
+
         return ResponseEntity.ok()
-        		             .contentType( mediaType )
-        		             .body( blobAsBytes );
+                             .contentType( mediaType )
+                             .body( blobAsBytes );
     }
-	
+
 }

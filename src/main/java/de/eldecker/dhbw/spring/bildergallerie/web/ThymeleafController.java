@@ -31,27 +31,27 @@ import de.eldecker.dhbw.spring.bildergallerie.logik.SortierAttributEnum;
  * Controller (kein RestController!), der die Anfragen für die Thymeleaf-Views bearbeitet.
  * Alle Pfade beginnen mit {@code /app/}.
  * <br><br>
- * 
+ *
  * Die Mapping-Methoden geben immer den Namen (ohne Datei-Endung) der darzustellenden Template-Datei
- * zurück, der im Ordner {@code src/main/resources/templates/} gesucht wird. 
- */ 
+ * zurück, der im Ordner {@code src/main/resources/templates/} gesucht wird.
+ */
 @Controller
 @RequestMapping( "/app/" )
 public class ThymeleafController {
-	
-	private static final Logger LOG = LoggerFactory.getLogger( ThymeleafController.class );
-	
-	
+
+    private static final Logger LOG = LoggerFactory.getLogger( ThymeleafController.class );
+
+
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Bildern. */
     private final BildRepository _bildRepo;
-        
+
     /** Service-Bean mit Geschäftslogik für Bilder. */
     private final BildService _bildService;
-    
+
     /** Repo-Bean für Zugriff auf Datenbanktabelle mit Tags. */
     private final TagRepository _tagRepo;
-        
-    
+
+
     /**
      * Konstruktor für Dependency Injection.
      */
@@ -61,165 +61,165 @@ public class ThymeleafController {
                                 TagRepository tagRepo ) {
 
         _tagRepo     = tagRepo;
-    	_bildRepo    = bildRepo;
-    	_bildService = bildService;    
+        _bildRepo    = bildRepo;
+        _bildService = bildService;
     }
-	
-    
-	/**
-	 * Einzelnes Bild anhand ID anzeigen.
-	 * 
-	 * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
-	 *              geschrieben werden.
-	 *               
-	 * @param id Pfadparameter "id" mit ID (Primärschlüssel) des anzuzeigenden Bildes           
-	 * 
-	 * @return Template-Datei "anzeige-einzelbild" wenn es kein Bild mit {@code id}
-	 *         gibt
-	 */
+
+
+    /**
+     * Einzelnes Bild anhand ID anzeigen.
+     *
+     * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
+     *              geschrieben werden.
+     *
+     * @param id Pfadparameter "id" mit ID (Primärschlüssel) des anzuzeigenden Bildes
+     *
+     * @return Template-Datei "anzeige-einzelbild" wenn es kein Bild mit {@code id}
+     *         gibt
+     */
     @GetMapping( "/einzelbild/{id}" )
     public String bildAnzeigen( Model model,
-    		                    @PathVariable("id") long id ) {
-    	
-    	LOG.info( "Anzeige von Einzelbild mit ID=\"{}\" angefordert.", id );
-    	
-		final Optional<BildEntity> bildOptional = _bildRepo.findById( id );
-		if ( bildOptional.isEmpty() ) {
-			
-    		final String fehlertext = format( "Bild mit ID %d nicht gefunden.", id );     				
-			
-			LOG.error( fehlertext );
-			
-    		model.addAttribute( "fehlermeldung", fehlertext );
-    		
-    		return "anzeige-einzelbild-fehler";
-    		
-		} else { // Bild gefunden
-			
-    		final BildEntity bild = bildOptional.get();
-    		
-        	model.addAttribute( "bild_titel"    , bild.getTitel()              );
-        	model.addAttribute( "bild_datumzeit", bild.getZeitpunktErzeugung() );
-        	model.addAttribute( "bild_kBytes"   , bild.getBildGroesseKBytes()  );
-        	model.addAttribute( "bild_id"       , id                           );
-        	model.addAttribute( "bild_tags"     , bild.getTags()               );
-        	
-        	LOG.info( "Bild für Einzelanzeige gefunden: {}", bild );
-        	
-        	return "anzeige-einzelbild";
-		}
+                                @PathVariable("id") long id ) {
+
+        LOG.info( "Anzeige von Einzelbild mit ID=\"{}\" angefordert.", id );
+
+        final Optional<BildEntity> bildOptional = _bildRepo.findById( id );
+        if ( bildOptional.isEmpty() ) {
+
+            final String fehlertext = format( "Bild mit ID %d nicht gefunden.", id );
+
+            LOG.error( fehlertext );
+
+            model.addAttribute( "fehlermeldung", fehlertext );
+
+            return "anzeige-einzelbild-fehler";
+
+        } else { // Bild gefunden
+
+            final BildEntity bild = bildOptional.get();
+
+            model.addAttribute( "bild_titel"    , bild.getTitel()              );
+            model.addAttribute( "bild_datumzeit", bild.getZeitpunktErzeugung() );
+            model.addAttribute( "bild_kBytes"   , bild.getBildGroesseKBytes()  );
+            model.addAttribute( "bild_id"       , id                           );
+            model.addAttribute( "bild_tags"     , bild.getTags()               );
+
+            LOG.info( "Bild für Einzelanzeige gefunden: {}", bild );
+
+            return "anzeige-einzelbild";
+        }
     }
-    
-    
+
+
     /**
      * Liste von Bildern in Tabelle anzeigen.
-     * 
+     *
      * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
-     *              geschrieben werden. 
-     *              
+     *              geschrieben werden.
+     *
      * @param sortiertNach URL-Parameter für Angabe des Attributs, nach dem die Liste
-     *                     sortiert werden soll. Gültige Werte:                        
+     *                     sortiert werden soll. Gültige Werte:
      *                     {@code zeit} (Default-Wert), {@code typ}, {@code titel}.
-     *                     Für ungültigen Wert wird eine Fehlerseite angezeigt.              
-     * 
+     *                     Für ungültigen Wert wird eine Fehlerseite angezeigt.
+     *
      * @return Template-Datei "bilder-liste" oder "bilder-liste-fehler"
      */
     @GetMapping( "/liste" )
     public String bildListeAnzeigen( Model model,
                                      @RequestParam(defaultValue = "zeit") String sortiertNach ) {
-                
+
        sortiertNach = sortiertNach.trim().toLowerCase();
-        
+
        SortierAttributEnum sortierAttribut = ZEIT;
 
        switch ( sortiertNach ) {
-       
+
            case "zeit" : sortierAttribut = ZEIT    ; break;
            case "typ"  : sortierAttribut = MIME_TYP; break;
            case "titel": sortierAttribut = TITEL   ; break;
            default:
-               final String fehlerText = 
-                   format( "Ungültiger Wert \"%s\" für URL-Parameter \"sortiertNach\".", sortiertNach );                        
-               LOG.error( fehlerText );       
-               model.addAttribute( "fehlertext", fehlerText );       
-               return "bilder-liste-fehler";                                      
+               final String fehlerText =
+                   format( "Ungültiger Wert \"%s\" für URL-Parameter \"sortiertNach\".", sortiertNach );
+               LOG.error( fehlerText );
+               model.addAttribute( "fehlertext", fehlerText );
+               return "bilder-liste-fehler";
        }
-                  
+
        final List<BildEntity> bilderIterator = _bildService.getBildListe( sortierAttribut );
-       model.addAttribute( "bilder_liste", bilderIterator );        
-       
+       model.addAttribute( "bilder_liste", bilderIterator );
+
        return "bilder-liste";
     }
-	
-    
+
+
     /**
      * Liste aller Tags anzeigen.
-     * 
+     *
      * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
-     *              geschrieben werden. 
-     *              
-     * @return Template-Datei "tag-liste"              
+     *              geschrieben werden.
+     *
+     * @return Template-Datei "tag-liste"
      */
     @GetMapping( "/tags" )
     public String tagsAnzeigen( Model model ) {
-           
+
         final List<TagEntity> tagListe = _tagRepo.findAllSortiertNachNameCaseInsensitive();
-                
+
         model.addAttribute( "tag_liste", tagListe );
-        
+
         return "tag-liste";
     }
-    
-    
+
+
     /**
      * Details für einzelnen Tag anzeigen (insb. Liste aller Bilder, die diesem Tag zugeordnet sind).
-     *  
+     *
      * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
-     *              geschrieben werden. 
-     *              
+     *              geschrieben werden.
+     *
      * @param id URL-Parameter mit ID des Tags; wenn kein Tag mit dieser ID gefunden wird, dann wird
      *           auf eine Fehlerseite weitergeleitet.
-     *  
+     *
      * @return Template-Datei "tag-details" oder "tag-details-fehler"
      */
     @GetMapping( "/tag/{id}")
-    public String tagAnzeigen( Model model,       
+    public String tagAnzeigen( Model model,
                                @PathVariable("id") long id ) {
-        
+
         final Optional<TagEntity> tagOptional = _tagRepo.findById( id );
         if ( tagOptional.isEmpty() ) {
-            
-            final String fehlerText = format( "Kein Tag mit ID=%d gefunden.", id );            
+
+            final String fehlerText = format( "Kein Tag mit ID=%d gefunden.", id );
             LOG.error( fehlerText );
             model.addAttribute( "fehlermeldung", fehlerText );
-            
+
             return "tag-details-fehler";
-            
+
         } else {
-        
+
             final TagEntity tag = tagOptional.get();
             model.addAttribute( "tag", tag );
             return "tag-details";
-        }                
-    }    
-    
-    
+        }
+    }
+
+
     /**
      * Erzeugt Seite zum Hochladen von einem neuen Bild mit aktueller Tag-Liste.
-     * 
+     *
      * @param model Objekt, in das die Werte für die Platzhalter in der Template-Datei
-     *              geschrieben werden. 
-     *              
+     *              geschrieben werden.
+     *
      * @return "bild-hochladen"
      */
     @GetMapping( "/hochladen" )
     public String bildHochladen( Model model ) {
-    	
+
         final List<TagEntity> tagListe = _tagRepo.findAllSortiertNachNameCaseInsensitive();
-        
+
         model.addAttribute( "tag_namen", tagListe );
-    	
-    	return "bild-hochladen";
+
+        return "bild-hochladen";
     }
-    
+
 }
