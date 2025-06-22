@@ -57,6 +57,9 @@ Das hierfür benötige Passwort ist ebenfalls in der Datei `docker-compose.yml` 
 
 <br>
 
+Auf dem Tab "Connection" müssen wir für "Host name/adress" den Wert "postgres" (Container-Name!) statt "localhost" eingeben, weil *pgAdmin* die in einem anderen
+Container laufende Postgres-Instanz finden soll.
+
 ![Screenshot 3](screenshot_3.png)
 
 <br>
