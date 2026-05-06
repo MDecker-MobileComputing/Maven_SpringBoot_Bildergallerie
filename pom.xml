@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
     https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
+        <version>4.0.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -42,6 +42,13 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+		<!-- ab Spring Boot 4 muss die Konsole explizit deklariert werden: https://bit.ly/3QzHIJ4 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-h2console</artifactId>
+		</dependency>
+
         <dependency><!-- JDBC-Treiber für Postgres-Datenbank -->
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -62,7 +69,7 @@
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
-            <version>3.1.0</version> <!-- für aktuelle Version siehe: https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
+            <version>3.3.0</version> <!-- für aktuelle Version siehe: https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
         </dependency>
 
         <!-- Für @RepositoryRestResource -->
