@@ -7,6 +7,7 @@
 services:
   postgres:
     image: postgres:18.3 # für neue Version siehe https://hub.docker.com/_/postgres
+    restart: "no"
     environment:
       POSTGRES_USER: datenbank-nutzer
       POSTGRES_PASSWORD: g3h3im
@@ -22,7 +23,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:9.14.0 # Für neue Version siehe: https://hub.docker.com/r/dpage/pgadmin4
-    restart: always
+    restart: "no"
     environment:
       PGADMIN_DEFAULT_EMAIL: pg-admin-nutzer@test.de
       PGADMIN_DEFAULT_PASSWORD: pg-admin-geheim
