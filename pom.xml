@@ -42,6 +42,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+		
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- ab Spring Boot 4 muss die Konsole explizit deklariert werden: https://bit.ly/3QzHIJ4 -->
 		<dependency>

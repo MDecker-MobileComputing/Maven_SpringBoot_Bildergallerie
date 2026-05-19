@@ -1,0 +1,26 @@
+services:
+  mysql:
+    image: mysql:9.7.0-oraclelinux9 # https://hub.docker.com/_/mysql
+    restart: no
+    environment:
+      MYSQL_ROOT_PASSWORD: wurzelpasswort
+      MYSQL_DATABASE: bildergallerie
+      MYSQL_USER: mein_mysql_nutzer
+      MYSQL_PASSWORD: g3h3im
+    ports:
+      - "3306:3306"
+#    volumes:
+#      - mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.3-apache # https://hub.docker.com/_/phpmyadmin/tags
+    restart: no
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: mein_mysql_nutzer
+      PMA_PASSWORD: g3h3im
+    ports:
+      - "8090:80"
+
+#volumes:
+#  mysql-data:
