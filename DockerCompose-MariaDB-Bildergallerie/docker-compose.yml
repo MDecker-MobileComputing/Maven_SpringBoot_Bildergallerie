@@ -1,0 +1,26 @@
+services:
+  mariadb:
+    image: mariadb:10.6.25-jammy # https://hub.docker.com/_/mariadb/tags
+    restart: no
+    environment:
+      MARIADB_ROOT_PASSWORD: wurzelpasswort
+      MARIADB_DATABASE: bildergallerie
+      MARIADB_USER: mein_mariadb_nutzer
+      MARIADB_PASSWORD: g3h3im
+    ports:
+      - "3306:3306"
+#    volumes:
+#      - mariadb-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.3-apache # https://hub.docker.com/_/phpmyadmin/tags
+    restart: no
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: mein_mariadb_nutzer
+      PMA_PASSWORD: g3h3im
+    ports:
+      - "8090:80"
+
+#volumes:
+#  mariadb-data:
