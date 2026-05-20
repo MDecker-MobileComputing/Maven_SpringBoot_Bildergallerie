@@ -21,6 +21,6 @@ services:
       PMA_PASSWORD: g3h3im
     ports:
       - "8090:80"
-
 #volumes:
 #  mariadb-data:
+
