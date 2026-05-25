@@ -38,6 +38,7 @@ ul li {
 img {
     max-height: 80vh;
     object-fit: contain; /* Bild nicht zuschneiden und Seitenverhältnis beibehalten */
+    border: 1px solid black;
 }
 
 tt {
